@@ -1,3 +1,10 @@
-.network-topology {
-  position: absolute;
+.network-map {
+  border: 1px solid #c7c7c7;
+
+  width: 862px;
+  height: 600px;
+
+  .network-topology {
+    position: absolute;
+  }
 }

@@ -1,0 +1,14 @@
+.blockchain-miniature {
+    border: 1px solid #c7c7c7;
+    
+
+    .header {
+        border-bottom: 1px solid #c7c7c7;
+    }
+
+    .blockchain {
+        overflow: scroll;
+        white-space: nowrap;
+        max-height: 200px;
+    }
+}

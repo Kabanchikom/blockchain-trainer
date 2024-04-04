@@ -72,11 +72,11 @@ export class SimulationService {
       this.blockchainService.receiveBlock(block, x)
     });
 
-    if (this.nodes.find(x => (x.blockchain?.chain.length ?? 0) > 10)) {
-      console.clear();
-      console.log(this.nodes);
-      debugger;
-    }  
+    // if (this.nodes.find(x => (x.blockchain?.chain.length ?? 0) > 10)) {
+    //   console.clear();
+    //   console.log(this.nodes);
+    //   debugger;
+    // }  
   }
 
   private randomizeTransactionNodes(): { senderIndex: number, receiverIndex: number } {

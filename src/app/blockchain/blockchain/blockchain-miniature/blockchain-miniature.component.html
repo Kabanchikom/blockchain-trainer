@@ -1,2 +1,12 @@
-<p>block-chain-miniature works!</p>
+<div class="blockchain-miniature">
+    <h6 class="header text-primary text-center p-1 m-0">Блокчейн</h6>
+    <div class="p-3 blockchain">
+        <div *ngFor="let node of nodes">
+            <a class="link-secondary" href="#">{{ node.name }}</a>:&nbsp;
+            <span *ngFor="let block of node.blockchain?.chain">
+                <button class="block btn btn-outline-success"></button>&nbsp;
+            </span>
+        </div>
+    </div>
+</div>
 

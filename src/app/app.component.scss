@@ -1,21 +1,19 @@
 .container {
-    //max-width: 1620px;
-
     .main-area {
         display: grid;
 
         grid-template-areas:
-            "nm nm nm nm nm nl"
-            "sc sc sc sc sc ."
+            "nm nm nm nm nl nl"
+            "sc sc sc sc . ."
             "log log log bm bm bm";
 
-        grid-template-rows: 600px 1fr 100px;
+        grid-template-rows: 600px;
+        grid-template-columns: repeat(6, 1fr);
 
         gap: 10px;
 
         .network-map {
             grid-area: nm;
-            border: 1px solid #c7c7c7;
         }
 
         .node-list {
@@ -29,12 +27,10 @@
 
         .log {
             grid-area: log;
-            border: 1px solid #c7c7c7;
         }
 
         .blockchain-mini {
             grid-area: bm;
-            border: 1px solid #c7c7c7;
         }
     }
 }

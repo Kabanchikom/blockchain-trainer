@@ -22,7 +22,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
 
   nodes: NodeItem[] = [];
 
-  canvasWidth: number = 1026;
+  canvasWidth: number = 862;
 
   private transactionItems: TransactionItem[] = [];
   private blockItems: BlockItem[] = [];
@@ -84,12 +84,6 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
         // this.blockchainService.enblockTransactionAllNodes(transaction);
       }
     );
-
-    onload = (event) => {
-      // this.canvasWidth = this.canvasWrapper.nativeElement.offsetWidth;
-      // const rect = this.canvasWrapper.nativeElement.getBoundingClientRect();
-      this.canvasWidth = 936;
-    };
   }
 
   initAll() {
