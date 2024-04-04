@@ -1,0 +1,17 @@
+<div class="d-flex flex-column gap-2">
+  <h2>Blockchain</h2>
+  <p>Is chain valid? {{ isChainValid() }}</p>
+  <div class="d-flex gap-2">
+    <input class="form-control" type="text" [(ngModel)]="newBlockData" placeholder="Enter block data">
+    <button class="btn btn-primary d-inline" (click)="mineBlock()">Mine Block</button>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let block of blockchain?.chain">
+      <p>Index: {{ block.id }}</p>
+      <p>Transactions: {{ block.transactions }}</p>
+      <p>Previous Hash: {{ block.previousHash }}</p>
+      <p>Hash: {{ block.hash }}</p>
+      <p>Nonce: {{ block.nonce }}</p>
+    </li>
+  </ul>
+</div>

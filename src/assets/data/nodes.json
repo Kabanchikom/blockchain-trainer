@@ -1,0 +1,157 @@
+[
+    {
+        "id": 1,
+        "name": "Узел 1",
+        "publicKey": "04ebe3074d1fe1c97a1385a2644856085815d592b4f7db1eb71e3faff6f64694c2d97815c8cf5c5b6979083e487231fbb3bd6968f62d09c81056ea2fc9ec73ffd2",
+        "privateKey": "3503c1dbc9712c3f7cb22b167479c371770ab60ece3b4f7c22994be33187d24b",
+        "blockchain": {
+            "chain": [
+                {
+                    "id": 0,
+                    "nonce": 2083236893,
+                    "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+                    "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                    "transactions": [
+                        {
+                            "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
+                            "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                            "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
+                            "data": {
+                                "fromAddress": null,
+                                "toAddress": "1MGZArxegFmyFRBmDBYCHQNNzsnnkv8NaC",
+                                "amount": 10000,
+                                "date": "2014-04-01T18:25:43.511Z"
+                              }
+                        }
+                    ]
+                }
+            ]
+        },
+        "transactionPool": [],
+        "newBlock": null
+    },
+    {
+        "id": 2,
+        "name": "Узел 2",
+        "publicKey": "04ac44646a6310b107d4795457860e20a8cfabf2e821adfea04b91b8bc7831ba72f0bbc4e44c94841ee9495390ddafe0dbb63b790e30ebe050cc0f3772f0c8b3b3",
+        "privateKey": "544276963d97411ec951de0ee74d21bd234defc48005c4395ac460540932e9bd",
+        "blockchain": {
+            "chain": [
+                {
+                    "id": 0,
+                    "nonce": 2083236893,
+                    "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+                    "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                    "transactions": [
+                        {
+                            "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
+                            "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                            "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
+                            "data": {
+                                "fromAddress": null,
+                                "toAddress": "1MGZArxegFmyFRBmDBYCHQNNzsnnkv8NaC",
+                                "amount": 10000,
+                                "date": "2014-04-01T18:25:43.511Z"
+                              }
+                        }
+                    ]
+                }
+            ]
+        },
+        "transactionPool": [],
+        "newBlock": null
+    },
+    {
+        "id": 3,
+        "name": "Узел 3",
+        "publicKey": "049598614a5a8913d7ddcde2ddbcfb86179b8f3bf2420b09bbebd2deade74fd40a89eb703a32cd3ece24df3f779ae27c65a10f2acf8342ee49eee0501244fe7a38",
+        "privateKey": "42fda926f8f2b499736630d14ebeaf3402792c035fa5c54ad42739092ebd2f5d",
+        "blockchain": {
+            "chain": [
+                {
+                    "id": 0,
+                    "nonce": 2083236893,
+                    "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+                    "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                    "transactions": [
+                        {
+                            "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
+                            "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                            "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
+                            "data": {
+                                "fromAddress": null,
+                                "toAddress": "1MGZArxegFmyFRBmDBYCHQNNzsnnkv8NaC",
+                                "amount": 10000,
+                                "date": "2014-04-01T18:25:43.511Z"
+                              }
+                        }
+                    ]
+                }
+            ]
+        },
+        "transactionPool": [],
+        "newBlock": null
+    },
+    {
+        "id": 4,
+        "name": "Узел 4",
+        "publicKey": "04673e20c11233f2b0a860c33fdc18f132c245ec2e472dff069c132556cebd5e6b5af6e33fdc1386636a08324431094d5e5d918a6a78e94d54dc417bafa912510c",
+        "privateKey": "a476f4a5765a745d9c4d475f46d852b1ac8955833ebdc36991e1d4117b824174",
+        "blockchain": {
+            "chain": [
+                {
+                    "id": 0,
+                    "nonce": 2083236893,
+                    "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+                    "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                    "transactions": [
+                        {
+                            "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
+                            "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                            "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
+                            "data": {
+                                "fromAddress": null,
+                                "toAddress": "1MGZArxegFmyFRBmDBYCHQNNzsnnkv8NaC",
+                                "amount": 10000,
+                                "date": "2014-04-01T18:25:43.511Z"
+                              }
+                        }
+                    ]
+                }
+            ]
+        },
+        "transactionPool": [],
+        "newBlock": null
+    },
+    {
+        "id": 5,
+        "name": "Узел 5",
+        "publicKey": "0424106e06d17ddd74943d0cc9daa387c7bed5baa6331b396d470c58cd1cc742be8365605ef11b18f4d74f9a9d42a8c701211d75cd2fd09ed9271c8f9aa5f38b3d",
+        "privateKey": "ca444b0fa9a7bbfdc3b95eb4160ef9773d092c8e27d8eed1231f63b2c39853a9",
+        "blockchain": {
+            "chain": [
+                {
+                    "id": 0,
+                    "nonce": 2083236893,
+                    "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+                    "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                    "transactions": [
+                        {
+                            "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
+                            "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
+                            "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
+                            "data": {
+                                "fromAddress": null,
+                                "toAddress": "1MGZArxegFmyFRBmDBYCHQNNzsnnkv8NaC",
+                                "amount": 10000,
+                                "date": "2014-04-01T18:25:43.511Z"
+                              }
+                        }
+                    ]
+                }
+            ]
+        },
+        "transactionPool": [],
+        "newBlock": null
+    }
+]
