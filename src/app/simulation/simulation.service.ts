@@ -4,7 +4,7 @@ import { InternetItem } from '../network/network-map/networkItems/internetItem';
 import { NodeItem } from '../network/network-map/networkItems/nodeItem';
 import { getRandomInt } from '../misc/mathHelper';
 import { INode } from '../blockchain/models/node';
-import { setRandomTimeout } from '../misc/delayHelper';
+import { setRandomInterval } from '../misc/delayHelper';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +23,11 @@ export class SimulationService {
   }
 
   simulate() {
-    setRandomTimeout(() => {
+    setRandomInterval(() => {
       this.doTransaction();
     }, 1000, 3000);
 
-    setRandomTimeout(() => {
+    setRandomInterval(() => {
       this.propagateBlock();
     }, 3333, 6666);
   }

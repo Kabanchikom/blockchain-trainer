@@ -1,6 +1,6 @@
 import { getRandomInt } from "./mathHelper";
 
-export function setRandomTimeout(func: () => void, minDelay: number, maxDelay: number) {
+export function setRandomInterval(func: () => void, minDelay: number, maxDelay: number) {
     function delayedExecution() {
         const delay = getRandomInt(minDelay, maxDelay)
         return setTimeout(() => {
