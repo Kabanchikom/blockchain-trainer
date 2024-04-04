@@ -5,12 +5,16 @@ import { NodeItem } from '../network/network-map/networkItems/nodeItem';
 import { getRandomInt } from '../misc/mathHelper';
 import { INode } from '../blockchain/models/node';
 import { setRandomTimeout } from '../misc/delayHelper';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SimulationService {
   nodes: INode[] = [];
+
+  speed: BehaviorSubject<number> = new BehaviorSubject(1);
+  lastSpeed: number = this.speed.value;
 
   constructor(
     private blockchainService: BlockchainService
@@ -25,11 +29,28 @@ export class SimulationService {
   simulate() {
     setRandomTimeout(() => {
       this.doTransaction();
-    }, 1000, 3000);
+    }, 1000 * this.speed.value, 3000 * this.speed.value);
 
     setRandomTimeout(() => {
       this.propagateBlock();
-    }, 3333, 6666);
+    }, 3333 * this.speed.value, 6666 * this.speed.value);
+  }
+
+  play() {
+    this.speed.next(this.lastSpeed);
+  }
+
+  pause() {
+    this.lastSpeed = this.speed.value;
+    this.speed.next(0);
+  }
+
+  slowDown(delta: number) {
+    this.speed.next(this.speed.value - delta);
+  }
+
+  speedUp(delta: number) {
+    this.speed.next(this.speed.value + delta);
   }
 
   doTransaction() {

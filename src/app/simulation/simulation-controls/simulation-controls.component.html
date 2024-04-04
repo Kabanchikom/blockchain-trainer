@@ -1,9 +1,13 @@
-<div class="simulation-controls d-flex justify-content-center text-primary gap-10">
-    <i class="bi bi-fast-forward-circle icon-flipped"></i>&nbsp;
-    <i class="bi bi-play-circle icon-flipped"></i>&nbsp;
+<div class="simulation-controls d-flex justify-content-center align-items-center text-primary gap-10">
+    <i class="bi bi-fast-forward-circle icon-flipped" (click)="slowDown(speed * 2)"></i>&nbsp;
+    <i class="bi bi-play-circle icon-flipped" (click)="slowDown(0.2)"></i>&nbsp;
 
-    <i class="bi bi-pause-circle"></i>&nbsp;
-
-    <i class="bi bi-play-circle"></i>&nbsp;
-    <i class="bi bi-fast-forward-circle"></i>
+    <i *ngIf="speed && speed > 0;else pauseRef" class="play-pause bi bi-pause-circle" (click)="pause()"></i>
+    <ng-template #pauseRef>
+        <i class="play-pause bi bi-play-circle" (click)="play()"></i>
+    </ng-template>
+    &nbsp;
+    
+    <i class="bi bi-play-circle" (click)="speedUp(0.2)"></i>&nbsp;
+    <i class="bi bi-fast-forward-circle" (click)="speedUp(speed * 2)"></i>
 </div>

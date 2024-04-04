@@ -9,6 +9,7 @@ import { NetworkModule } from './network/network.module';
 import { NodeListComponent } from './nodes/node-list/node-list.component';
 import { SimulationControlsComponent } from './simulation/simulation-controls/simulation-controls.component';
 import { LoggerComponent } from './command-handler/logger/logger.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { LoggerComponent } from './command-handler/logger/logger.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     BlockchainModule,
     NetworkModule,
