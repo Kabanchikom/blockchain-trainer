@@ -10,6 +10,7 @@ import { hexStringToUint8Array, publicKeyToUncompressed, uint8ArrayToHexString }
 import { IBlock } from './models/block';
 import { getRandomInt } from '../misc/mathHelper';
 import { json } from 'd3';
+import { LoggerService } from '../command-handler/logger/logger.service';
 
 const transactionsInBlock = 5;
 
@@ -20,25 +21,30 @@ export class BlockchainService {
   nodes: BehaviorSubject<INode[]> = new BehaviorSubject<INode[]>([]);
 
   transactionBuffer: ITransaction[] = [];
+  transactionCounter: number = 0;
+
   blockBuffer: IBlock[] = [];
 
-  broadcastTransactionSubject: Subject<{transaction: ITransaction, node: INode}> = new Subject();
+  broadcastTransactionSubject: Subject<{ transaction: ITransaction, node: INode }> = new Subject();
   receiveTransactionSubject: Subject<ITransaction> = new Subject();
 
-  broadcastBlockSubject: Subject<{block: IBlock, node: INode}> = new Subject();
+  broadcastBlockSubject: Subject<{ block: IBlock, node: INode }> = new Subject();
   receiveBlockSubject: Subject<IBlock> = new Subject();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private loggerService: LoggerService
+  ) { }
 
   initNodes(): Observable<INode[]> {
     return this.http.get<INode[]>('assets/data/nodes.json').pipe(
-      tap(x => {this.nodes.next(x)})
+      tap(x => { this.nodes.next(x) })
     );
   }
 
-  createTransaction(node: INode, toAddress: string, amount: number) {
+  createTransaction(sender: INode, receiver: INode, toAddress: string, amount: number) {
     const data: ITransactionData = {
-      fromAddress: node.publicKey,
+      fromAddress: sender.publicKey,
       toAddress: toAddress,
       amount: amount,
       date: new Date()
@@ -47,8 +53,8 @@ export class BlockchainService {
     const hash = CryptoJS.SHA256(JSON.stringify(data)).toString();
 
     const hashBytes = hexStringToUint8Array(hash);
-    const privateKeyBytes = hexStringToUint8Array(node.privateKey);
-    
+    const privateKeyBytes = hexStringToUint8Array(sender.privateKey);
+
     const encodedSignature = secp256k1.ecdsaSign(hashBytes, privateKeyBytes).signature;
     const decodedSignature = uint8ArrayToHexString(encodedSignature);
 
@@ -64,16 +70,23 @@ export class BlockchainService {
     // console.log(asd);
 
 
-    const isValid = secp256k1.ecdsaVerify(encodedSignature, hashBytes, publicKeyToUncompressed(node.publicKey));
+    const isValid = secp256k1.ecdsaVerify(encodedSignature, hashBytes, publicKeyToUncompressed(sender.publicKey));
 
     // console.log(isValid);
 
     const transaction: ITransaction = {
-        publicKey: node.publicKey,
-        hash: hash,
-        signature: decodedSignature,
-        data: data
+      id: ++this.transactionCounter,
+      publicKey: sender.publicKey,
+      hash: hash,
+      signature: decodedSignature,
+      data: data
     };
+
+    this.loggerService.log(`
+      Транзакция #${transaction.id} создана. 
+      Отправитель: ${sender.name}. 
+      Получатель: ${receiver.name}. 
+      Сумма: ${transaction.data.amount} BTC`);
 
     return transaction;
   }
@@ -81,12 +94,16 @@ export class BlockchainService {
   broadcastTransaction(transaction: ITransaction, node: INode) {
     this.transactionBuffer.push(transaction);
     this.broadcastTransactionSubject.next({ transaction: transaction, node: node });
+
+    this.loggerService.log(`
+      Транзакция #${transaction.id} распространяется по сети. 
+      Отправитель: ${node.name}`);
   }
 
   receiveTransaction(transaction: ITransaction, node: INode) {
     const newNodes: INode[] = this.nodes.value;
     let newNode = newNodes.find(x => x.id === node.id);
-    
+
     if (!newNode) {
       throw new Error(`Узел с id=${newNode} не найден`);
     }
@@ -98,8 +115,10 @@ export class BlockchainService {
     this.transactionBuffer = newBuffer;
 
     this.receiveTransactionSubject.next(transaction);
-    
-    //console.log(node.name, node.transactionPool);
+
+    this.loggerService.log(`
+      Транзакция #${transaction.id} попадает в пул узла. 
+      Получатель: ${node.name}`);
   }
 
   enblockTransaction(transaction: ITransaction, node: INode) {
@@ -110,9 +129,13 @@ export class BlockchainService {
       throw new Error(`Узел с id=${newNode} не найден`);
     }
 
+    if (!newNode.blockchain) {
+      throw new Error(`Блокчейн узла с id=${node.id} не инициализирован`);
+    }
+
     if (newNode.newBlock === null) {
       newNode.newBlock = {
-        id: 0,
+        id: newNode.blockchain.chain.length,
         nonce: 0,
         previousHash: '',
         hash: '',
@@ -122,12 +145,14 @@ export class BlockchainService {
     }
 
     if (this.isBlockReadyToComplete(newNode.newBlock)) {
-      this.completeBlock(newNode.newBlock, node);   
+      this.completeBlock(newNode.newBlock, node);
     } else {
       newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
       newNode.newBlock.transactions.push(transaction);
-      // this.nodes.next(newNodes);
-      // console.log(newNode.name, newNode.newBlock.transactions);
+
+      this.loggerService.log(`
+        Транзакция #${transaction.id} попадает в блок #${newNode.newBlock.id}. 
+        Инициатор: ${node.name}`);
     }
 
     return true;
@@ -144,9 +169,9 @@ export class BlockchainService {
     const newNodes = this.nodes.value;
 
     const previousHash = node.blockchain.chain[node.blockchain.chain.length - 1].hash;
-    
+
     const blockHeader = {
-      id: node.blockchain.chain.length,
+      id: block.id,
       nonce: getRandomInt(0, Math.pow(2, 32)),
       previousHash: previousHash,
       timestamp: new Date(),
@@ -158,7 +183,7 @@ export class BlockchainService {
     const doubleHash = CryptoJS.SHA256(hash).toString();
 
     const newBlock = {
-      id: node.blockchain.chain.length,
+      id: block.id,
       nonce: getRandomInt(0, Math.pow(2, 32)),
       timestamp: block.timestamp,
       previousHash: previousHash,
@@ -169,6 +194,10 @@ export class BlockchainService {
     node.newBlock = newBlock;
 
     this.nodes.next(newNodes);
+
+    this.loggerService.log(`
+      Сгенерирован новый блок #${newBlock.id}. 
+      Майнер: ${node.name}`);
   }
 
   isBlockCompleted(block: IBlock) {
@@ -178,19 +207,23 @@ export class BlockchainService {
   broadcastBlock(block: IBlock, node: INode) {
     if (!this.isBlockCompleted(block)) {
       throw new Error(`Блок с id=${node.id} не завершен`);
-    }  
+    }
 
     this.blockBuffer.push(block);
     this.broadcastBlockSubject.next({ block: block, node: node });
+
+    this.loggerService.log(`
+      Блок #${block.id} распространяется по сети. 
+      Инициатор: ${node.name}`);
   }
 
   receiveBlock(block: IBlock, node: INode) {
     const newNodes: INode[] = this.nodes.value;
     let newNode = newNodes.find(x => x.id === node.id);
-    
+
     if (!newNode) {
       throw new Error(`Узел с id=${newNode} не найден`);
-    }  
+    }
 
     newNode.blockchain?.chain.push(block);
     this.nodes.next(newNodes);
@@ -199,12 +232,16 @@ export class BlockchainService {
     this.blockBuffer = newBuffer;
 
     this.receiveBlockSubject.next(block);
+
+    this.loggerService.log(`
+      Блок #${block.id} попадает в блокчейн узла. 
+      Получатель: ${node.name}`);
   }
 
   clearBuffer(node: INode) {
     const newNodes: INode[] = this.nodes.value;
     let newNode = newNodes.find(x => x.id === node.id);
-    
+
     if (!newNode) {
       throw new Error(`Узел с id=${newNode} не найден`);
     }

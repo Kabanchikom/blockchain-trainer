@@ -13,6 +13,7 @@
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                     "transactions": [
                         {
+                            "id": 0,
                             "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
                             "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                             "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
@@ -44,6 +45,7 @@
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                     "transactions": [
                         {
+                            "id": 0,
                             "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
                             "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                             "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
@@ -75,6 +77,7 @@
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                     "transactions": [
                         {
+                            "id": 0,
                             "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
                             "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                             "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
@@ -106,6 +109,7 @@
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                     "transactions": [
                         {
+                            "id": 0,
                             "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
                             "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                             "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",
@@ -137,6 +141,7 @@
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                     "transactions": [
                         {
+                            "id": 0,
                             "publicKey": "045adf16845ecf02a74f945ef09a546fda3b6cabb972cf531feb67bbfc2c33f0ae0e85e6ca0cd55a4fa633911e6691ea8d2d5741d341baa1fe40514f525b858422",
                             "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
                             "signature": "3046022100fa44887878eb3701791adff6dd24cb9d8226bb8ff9b33ec17be89671cfe1d08a022100a41f133fa70c1eac6ce2145b7a48ffcdf3a622b689722f5f93391f5c4b8eab41",

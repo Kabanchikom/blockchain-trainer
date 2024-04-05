@@ -36,7 +36,7 @@ export class SimulationService {
     const { senderIndex, receiverIndex } = this.randomizeTransactionNodes();
 
     const transaction = this.blockchainService.createTransaction(
-      this.nodes[senderIndex], this.nodes[receiverIndex].publicKey, 10);
+      this.nodes[senderIndex], this.nodes[receiverIndex], this.nodes[receiverIndex].publicKey, 10);
 
     this.blockchainService.broadcastTransaction(transaction, this.nodes[senderIndex]);
 
