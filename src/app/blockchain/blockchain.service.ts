@@ -75,8 +75,6 @@ export class BlockchainService {
         data: data
     };
 
-    //node.transactionPool.push(transaction);
-
     return transaction;
   }
 
@@ -96,7 +94,7 @@ export class BlockchainService {
     newNode.transactionPool.push(transaction);
     this.nodes.next(newNodes);
 
-    const newBuffer = this.transactionBuffer.filter(x => x !== transaction);
+    const newBuffer = this.transactionBuffer.filter(x => x.hash !== transaction.hash);
     this.transactionBuffer = newBuffer;
 
     this.receiveTransactionSubject.next(transaction);
@@ -126,9 +124,10 @@ export class BlockchainService {
     if (this.isBlockReadyToComplete(newNode.newBlock)) {
       this.completeBlock(newNode.newBlock, node);   
     } else {
-      newNode.transactionPool = newNode.transactionPool.filter(x => x !== transaction);
+      newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
       newNode.newBlock.transactions.push(transaction);
-      this.nodes.next(newNodes);
+      // this.nodes.next(newNodes);
+      // console.log(newNode.name, newNode.newBlock.transactions);
     }
 
     return true;
@@ -165,7 +164,7 @@ export class BlockchainService {
       previousHash: previousHash,
       hash: doubleHash,
       transactions: structuredClone(block.transactions)
-    }
+    };
 
     node.newBlock = newBlock;
 
@@ -179,7 +178,7 @@ export class BlockchainService {
   broadcastBlock(block: IBlock, node: INode) {
     if (!this.isBlockCompleted(block)) {
       throw new Error(`Блок с id=${node.id} не завершен`);
-    }
+    }  
 
     this.blockBuffer.push(block);
     this.broadcastBlockSubject.next({ block: block, node: node });
@@ -196,10 +195,22 @@ export class BlockchainService {
     newNode.blockchain?.chain.push(block);
     this.nodes.next(newNodes);
 
-    const newBuffer = this.blockBuffer.filter(x => x !== block);
+    const newBuffer = this.blockBuffer.filter(x => x.hash !== block.hash);
     this.blockBuffer = newBuffer;
 
     this.receiveBlockSubject.next(block);
+  }
+
+  clearBuffer(node: INode) {
+    const newNodes: INode[] = this.nodes.value;
+    let newNode = newNodes.find(x => x.id === node.id);
+    
+    if (!newNode) {
+      throw new Error(`Узел с id=${newNode} не найден`);
+    }
+
+    newNode.newBlock = null;
+    this.nodes.next(newNodes);
   }
 
   experiment() {

@@ -69,7 +69,8 @@ export class SimulationService {
 
     this.nodes.forEach(x => {
       // todo убрать из получателей узел-отправитель
-      this.blockchainService.receiveBlock(block, x)
+      this.blockchainService.receiveBlock(block, x);
+      this.blockchainService.clearBuffer(x);
     });
 
     // if (this.nodes.find(x => (x.blockchain?.chain.length ?? 0) > 10)) {
