@@ -1,10 +1,9 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BlockchainService } from '../blockchain/blockchain.service';
-import { InternetItem } from '../network/network-map/networkItems/internetItem';
-import { NodeItem } from '../network/network-map/networkItems/nodeItem';
-import { getRandomInt } from '../misc/mathHelper';
+import { getRandomInt, shuffleArray } from '../misc/mathHelper';
 import { INode } from '../blockchain/models/node';
-import { setRandomTimeout } from '../misc/delayHelper';
+import { setRandomInterval, setRandomDelay } from '../misc/delayHelper';
+import { concatMap, from, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,40 +22,46 @@ export class SimulationService {
   }
 
   simulate() {
-    setRandomTimeout(() => {
-      this.doTransaction();
-    }, 1000, 3000);
+    setRandomInterval(1000, 2000, () => {
+      this.doTransaction(1000, 2000).subscribe();
+    });
 
-    setRandomTimeout(() => {
-      this.propagateBlock();
-    }, 3333, 6666);
+    setRandomInterval(3333, 6666, () => {
+      this.propagateBlock(2222, 3333)?.subscribe();
+    });
   }
 
-  doTransaction() {
+  private doTransaction(minInterval: number, maxInterval: number) {
     const { senderIndex, receiverIndex } = this.randomizeTransactionNodes();
-
     const transaction = this.blockchainService.createTransaction(
       this.nodes[senderIndex], this.nodes[receiverIndex], this.nodes[receiverIndex].publicKey, 10);
 
-    this.blockchainService.broadcastTransaction(transaction, this.nodes[senderIndex]);
-
-    this.nodes.forEach(x => {
-      // todo убрать из получателей узел-отправитель
-      this.blockchainService.receiveTransaction(transaction, x)
-    });
-
-    this.nodes.forEach(x => {
-      // todo убрать из получателей узел-отправитель
-      this.blockchainService.enblockTransaction(transaction, x);
-    });
-
-    // if ((this.nodes[0].blockchain?.chain.length ?? 0) > 1) {
-    //   console.log(this.nodes);
-    //   debugger;
-    // }  
+    return setRandomDelay(minInterval, maxInterval).pipe(
+      tap(() => {
+        this.blockchainService.broadcastTransaction(transaction, this.nodes[senderIndex]);
+      }),
+      concatMap(() => from(this.nodes).pipe(
+        concatMap(x => {
+          return setRandomDelay(minInterval, maxInterval).pipe(
+            tap(() => {
+              this.blockchainService.receiveTransaction(transaction, x);
+            })
+          );
+        })
+      )),
+      concatMap(() => from(this.nodes).pipe(
+        concatMap(x => {
+          return setRandomDelay(minInterval, maxInterval).pipe(
+            tap(() => {
+              this.blockchainService.enblockTransaction(transaction, x);
+            })
+          );
+        })
+      ))
+    )
   }
 
-  propagateBlock() {
+  private propagateBlock(minInterval: number, maxInterval: number) {
     const senderIndex = getRandomInt(0, this.nodes.length - 1);
 
     const block = this.nodes[senderIndex].newBlock;
@@ -65,19 +70,27 @@ export class SimulationService {
       return;
     }
 
-    this.blockchainService.broadcastBlock(block, this.nodes[senderIndex]);
+    return setRandomDelay(minInterval, maxInterval).pipe(
+      tap(() => {
+        this.blockchainService.broadcastBlock(block, this.nodes[senderIndex]);
+      }),
+      concatMap(() => from(shuffleArray(this.nodes)).pipe(
+        concatMap(x => {
+          return setRandomDelay(minInterval, maxInterval).pipe(
+            tap(() => {
+              this.blockchainService.receiveBlock(block, x);
+              this.blockchainService.clearBuffer(x);
 
-    this.nodes.forEach(x => {
-      // todo убрать из получателей узел-отправитель
-      this.blockchainService.receiveBlock(block, x);
-      this.blockchainService.clearBuffer(x);
-    });
-
-    // if (this.nodes.find(x => (x.blockchain?.chain.length ?? 0) > 10)) {
-    //   console.clear();
-    //   console.log(this.nodes);
-    //   debugger;
-    // }  
+              if (this.nodes.find(x => (x.blockchain?.chain.length ?? 0) > 3)) {
+                console.clear();
+                console.log(this.nodes);
+                debugger;
+              }
+            })
+          );
+        })
+      ))
+    )
   }
 
   private randomizeTransactionNodes(): { senderIndex: number, receiverIndex: number } {
