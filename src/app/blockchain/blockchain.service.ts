@@ -64,11 +64,14 @@ export class BlockchainService {
       data: data
     };
 
-    this.loggerService.log(`
-      Транзакция ${transaction.hash} создана. 
-      Отправитель: ${sender.name}. 
-      Получатель: ${receiver.name}. 
-      Сумма: ${transaction.data.amount} BTC`);
+    this.loggerService.logTransactionCreated({
+      id: 0,
+      type: 'TransactionCreated',
+      hash: hash,
+      sender: sender.name,
+      reciever: receiver.name,
+      amount: data.amount
+    });
 
     return transaction;
   }
@@ -77,9 +80,12 @@ export class BlockchainService {
     this.transactionBuffer.push(transaction);
     this.broadcastTransactionSubject.next({ transaction: transaction, node: node });
 
-    this.loggerService.log(`
-      Транзакция ${transaction.hash} распространяется по сети. 
-      Отправитель: ${node.name}`);
+    this.loggerService.logTransactionBroadcasted({
+      id: 0,
+      type: 'TransactionBroadcasted',
+      hash: transaction.hash,
+      sender: node.name
+    });
   }
 
   receiveTransaction(transaction: ITransaction, node: INode) {
@@ -98,9 +104,12 @@ export class BlockchainService {
 
     this.receiveTransactionSubject.next(transaction);
 
-    this.loggerService.log(`
-      Транзакция ${transaction.hash} попадает в пул узла. 
-      Получатель: ${node.name}`);
+    this.loggerService.logTransactionReceived({
+      id: 0,
+      type: 'TransactionReceived',
+      hash: transaction.hash,
+      reciever: node.name
+    });
   }
 
   enblockTransaction(transaction: ITransaction, node: INode) {
@@ -131,9 +140,13 @@ export class BlockchainService {
       newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
       newNode.newBlock.transactions.push(transaction);
 
-      this.loggerService.log(`
-        Транзакция ${transaction.hash} попадает в блок ${newNode.newBlock.hash}. 
-        Инициатор: ${node.name}`);
+      this.loggerService.logTransactionEnblocked({
+        id: 0,
+        type: 'TransactionEnblocked',
+        transactionHash: transaction.hash,
+        blockHash: newNode.newBlock.hash,
+        actor: node.name,
+      });
     }
 
     return true;
@@ -176,9 +189,12 @@ export class BlockchainService {
 
     this.nodes.next(newNodes);
 
-    this.loggerService.log(`
-      Сгенерирован новый блок ${newBlock.hash}. 
-      Майнер: ${node.name}`);
+    this.loggerService.logBlockGenerated({
+      id: 0,
+      type: 'BlockGenerated',
+      hash: newBlock.hash,
+      miner: node.name,
+    });
   }
 
   isBlockCompleted(block: IBlock) {
@@ -193,9 +209,12 @@ export class BlockchainService {
     this.blockBuffer.push(block);
     this.broadcastBlockSubject.next({ block: block, node: node });
 
-    this.loggerService.log(`
-      Блок ${block.hash} распространяется по сети. 
-      Инициатор: ${node.name}`);
+    this.loggerService.logBlockBroadcasted({
+      type: 'BlockBroadcasted',
+      id: 0,
+      hash: block.hash,
+      sender: node.name,
+    });
   }
 
   receiveBlock(block: IBlock, node: INode) {

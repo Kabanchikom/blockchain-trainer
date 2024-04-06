@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoggerService } from './logger.service';
+import { ILogItem } from './models/ILogItem';
+import { BlockBroadcasted, BlockGenerated, TransactionBroadcasted, TransactionCreated, TransactionEnblocked, TransactionRecieved } from './models/logItems';
 
 @Component({
   selector: 'app-logger',
@@ -7,7 +9,7 @@ import { LoggerService } from './logger.service';
   styleUrls: ['./logger.component.scss']
 })
 export class LoggerComponent implements OnInit {
-  messages: string[] = [];
+  items: ILogItem[] = [];
   isSelecting: boolean = false;
 
   @ViewChild('logContainer') logContainer!: ElementRef;
@@ -18,17 +20,18 @@ export class LoggerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loggerService.messages.subscribe(x => {
+    this.loggerService.items.subscribe(x => {
       if (!this.isSelecting) {
         this.scrollToBottom();
       }
-      this.messages = x;
+      this.items = x;
     });
   }
 
   private scrollToBottom(): void {
     try {
       this.logContent.nativeElement.scrollTop = this.logContent.nativeElement.scrollHeight;
+      console.log(this.logContent.nativeElement.scrollHeight);
     } catch(err) { }
   }
 
@@ -43,7 +46,27 @@ export class LoggerComponent implements OnInit {
     }
   }
 
-  trackByFn(index: number, item: string): number {
-    return index; // Возвращаем уникальный идентификатор элемента списка
+  isTransactionCreated(item: ILogItem): item is TransactionCreated {
+    return item.type === 'TransactionCreated';
+  }
+
+  isTransactionBroadcasted(item: ILogItem): item is TransactionBroadcasted {
+    return item.type === 'TransactionBroadcasted';
+  }
+
+  isTransactionRecieved(item: ILogItem): item is TransactionRecieved {
+    return item.type === 'TransactionRecieved';
+  }
+
+  isTransactionEnblocked(item: ILogItem): item is TransactionEnblocked {
+    return item.type === 'TransactionEnblocked';
+  }
+
+  isBlockGenerated(item: ILogItem): item is BlockGenerated {
+    return item.type === 'BlockGenerated';
+  }
+
+  isBlockBroadcasted(item: ILogItem): item is BlockBroadcasted {
+    return item.type === 'BlockBroadcasted';
   }
 }

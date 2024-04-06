@@ -1,8 +1,57 @@
 <div class="logger" #logContainer>
     <h6 class="header text-primary text-center p-1 m-0">Лог операций</h6>
     <div class="p-3 log" #logContent (mousedown)="onMouseDown()" (mouseup)="onMouseUp()">
-        <div *ngFor="let x of messages; trackBy: trackByFn; let i = index">
-            <a class="link-secondary" href="#">{{ i + 1 }}. {{ x }}</a>&nbsp;
+        <div *ngFor="let x of items; let i = index">
+            <span *ngIf="isTransactionCreated(x)">
+                <p class="text-success">{{ x.id }}. Транзакция создана</p>
+                <span class="text-secondary">
+                    <p>Хэш: {{ x.hash }}</p>
+                    <p>Отправитель: {{ x.sender }}</p>
+                    <p>Получатель: {{ x.reciever }}</p>
+                    <p>Сумма: {{ x.amount }} BTC</p>
+                </span>
+            </span>
+
+            <span *ngIf="isTransactionBroadcasted(x)">
+                <p class="text-success">{{ x.id }}. Транзакция распространяется по сети</p>
+                <span class="text-secondary">
+                    <p>Хэш: {{ x.hash }}</p>
+                    <p>Отправитель: {{ x.sender }}</p>
+                </span>
+            </span>
+
+            <span *ngIf="isTransactionRecieved(x)">
+                <p class="text-success">{{ x.id }}. Транзакция попадает в пул узла</p>
+                <span class="text-secondary">
+                    <p>Хэш: {{ x.hash }}</p>
+                    <p>Получатель: {{ x.reciever }}</p>
+                </span>
+            </span>
+
+            <span *ngIf="isTransactionEnblocked(x)">
+                <p class="text-success">{{ x.id }}. Транзакция попадает в блок</p>
+                <span class="text-secondary">
+                    <p>Хэш транзакции: {{ x.transactionHash }}</p>
+                    <p>Хэш блока: {{ x.blockHash }}</p>
+                    <p>Инициатор: {{ x.actor }}</p>
+                </span>
+            </span>
+
+            <span *ngIf="isBlockGenerated(x)">
+                <p class="text-success">{{ x.id }}. Новый блок сгенерирован</p>
+                <span class="text-secondary">
+                    <p>Хэш блока: {{ x.hash }}</p>
+                    <p>Майнер: {{ x.miner }}</p>
+                </span>
+            </span>
+
+            <span *ngIf="isBlockBroadcasted(x)">
+                <p class="text-success">{{ x.id }}. Новый блок распространяется по сети/p>
+                <span class="text-secondary">
+                    <p>Хэш блока: {{ x.hash }}</p>
+                    <p>Отправитель: {{ x.sender }}</p>
+                </span>
+            </span>
         </div>
     </div>
 </div>
