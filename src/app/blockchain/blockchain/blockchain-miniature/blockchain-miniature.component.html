@@ -4,9 +4,8 @@
         <div *ngFor="let node of nodes">
             <a class="link-secondary" href="#">{{ node.name }}</a>:&nbsp;
             <span *ngFor="let block of node.blockchain?.chain">
-                <button class="block btn btn-outline-success"></button>&nbsp;
+                <button class="block btn btn-outline-success" (click)="onClick(node.name, block)"></button>&nbsp;
             </span>
         </div>
     </div>
 </div>
-

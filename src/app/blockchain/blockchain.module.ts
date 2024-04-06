@@ -4,22 +4,30 @@ import { HttpClientModule } from  '@angular/common/http';
 import { BlockchainComponent } from './blockchain/blockchain.component';
 import { FormsModule } from '@angular/forms';
 import { BlockchainMiniatureComponent } from './blockchain/blockchain-miniature/blockchain-miniature.component';
+import { BlockComponent } from './block/block.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { BlockDrawerComponent } from './block/block-drawer/block-drawer.component';
 
 
 
 @NgModule({
   declarations: [
     BlockchainComponent,
-    BlockchainMiniatureComponent
+    BlockchainMiniatureComponent,
+    BlockComponent,
+    BlockDrawerComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DragDropModule
   ],
   exports: [
     BlockchainComponent,
-    BlockchainMiniatureComponent
+    BlockchainMiniatureComponent,
+    BlockComponent,
+    BlockDrawerComponent
   ]
 })
 export class BlockchainModule { }

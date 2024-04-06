@@ -1,0 +1,36 @@
+<div *ngIf="showBlock" class="card block p-2 gap-10">
+    <h5 class="card-title text-center text-primary">
+        <b><i class="bi bi-pc-display"></i> {{ block?.nodeName }}</b>
+        <button class="close-btn" aria-label="Close" (click)="closeBlock()">&times;</button>
+    </h5>
+
+    <div class="form-group">
+        <label for="id">Id</label>
+        <input id="id" class="form-control" type="text" disabled [value]="block?.block?.id">
+    </div>
+
+    <div class="form-group">
+        <label for="nonce">Nonce</label>
+        <input id="nonce" class="form-control" type="text" disabled [value]="block?.block?.nonce">
+    </div>
+
+    <div class="form-group">
+        <label for="timestamp">Метка времени</label>
+        <input id="timestamp" class="form-control" type="text" disabled [value]="block?.block?.timestamp?.toString()">
+    </div>
+
+    <div class="form-group">
+        <label for="hash">Хэш</label>
+        <input id="hash" class="form-control" type="text" disabled [value]="block?.block?.hash">
+    </div>
+
+    <div class="form-group">
+        <label for="prev_hash">Предыдущий хэш</label>
+        <input id="prev_hash" class="form-control" type="text" disabled [value]="block?.block?.previousHash">
+    </div>
+
+    <!-- <div class="form-group">
+        <label for="transactions">Транзакции</label>
+        <input id="transactions" class="form-control" type="text" disabled [value]="block?.block?.transactions">
+    </div> -->
+</div>

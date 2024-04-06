@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { INode } from '../../models/node';
 import { BlockchainService } from '../../blockchain.service';
+import { IBlock } from '../../models/block';
+import { BlockDrawerService } from '../../block/block-drawer/block-drawer.service';
 
 @Component({
   selector: 'app-blockchain-miniature',
@@ -11,7 +13,8 @@ export class BlockchainMiniatureComponent implements OnInit {
   nodes: INode[] = [];
 
   constructor(
-    private blockchainService: BlockchainService
+    private blockchainService: BlockchainService,
+    private blockDrawerService: BlockDrawerService
   ) { }
 
   ngOnInit(): void {
@@ -20,5 +23,12 @@ export class BlockchainMiniatureComponent implements OnInit {
         this.nodes = x;
       }
     );
+  }
+
+  onClick(nodeName: string, block: IBlock ) {
+    this.blockDrawerService.open({
+      nodeName: nodeName,
+      block: block
+    });
   }
 }
