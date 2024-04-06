@@ -7,6 +7,7 @@ import { BlockchainMiniatureComponent } from './blockchain/blockchain-miniature/
 import { BlockComponent } from './block/block.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BlockDrawerComponent } from './block/block-drawer/block-drawer.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -21,7 +22,8 @@ import { BlockDrawerComponent } from './block/block-drawer/block-drawer.componen
     CommonModule,
     FormsModule,
     HttpClientModule,
-    DragDropModule
+    DragDropModule,
+    NgbModule
   ],
   exports: [
     BlockchainComponent,

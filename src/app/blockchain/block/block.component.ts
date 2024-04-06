@@ -8,10 +8,15 @@ import { IBlock } from '../models/block';
 })
 export class BlockComponent {
   showBlock = true;
+  isTransactionsCollapsed = true;
 
   @Input() block: { nodeName: string, block: IBlock } | null = null;
 
   closeBlock() {
     this.showBlock = false;
+  }
+
+  onTransactionsClick() {
+    this.isTransactionsCollapsed = !this.isTransactionsCollapsed;
   }
 }
