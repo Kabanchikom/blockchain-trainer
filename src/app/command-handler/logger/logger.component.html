@@ -1,7 +1,7 @@
-<div class="logger">
+<div class="logger" #logContainer>
     <h6 class="header text-primary text-center p-1 m-0">Лог операций</h6>
-    <div class="p-3 log">
-        <div *ngFor="let x of messages; let i = index">
+    <div class="p-3 log" #logContent (mousedown)="onMouseDown()" (mouseup)="onMouseUp()">
+        <div *ngFor="let x of messages; trackBy: trackByFn; let i = index">
             <a class="link-secondary" href="#">{{ i + 1 }}. {{ x }}</a>&nbsp;
         </div>
     </div>
