@@ -31,7 +31,6 @@ export class LoggerComponent implements OnInit {
   private scrollToBottom(): void {
     try {
       this.logContent.nativeElement.scrollTop = this.logContent.nativeElement.scrollHeight;
-      console.log(this.logContent.nativeElement.scrollHeight);
     } catch(err) { }
   }
 

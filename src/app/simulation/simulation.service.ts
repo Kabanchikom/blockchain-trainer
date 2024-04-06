@@ -78,22 +78,23 @@ export class SimulationService {
         concatMap(x => {
           return setRandomDelay(minInterval, maxInterval).pipe(
             tap(() => {
-              this.blockchainService.enblockTransaction(transaction, x);
-
-              this.loggerService.logTransactionEnblocked({
-                id: 0,
-                type: 'TransactionEnblocked',
-                transactionHash: transaction.hash,
-                blockHash: x.newBlock?.hash ?? 'error',
-                actor: x.name,
-              });
-
-              if (x.newBlock && this.blockchainService.isBlockCompleted(x.newBlock)) {
+              if (x.newBlock && this.blockchainService.isBlockReadyToComplete(x.newBlock)) {
+                console.log(x.newBlock);
+                this.blockchainService.completeBlock(x.newBlock, x);
                 this.loggerService.logBlockGenerated({
                   id: 0,
                   type: 'BlockGenerated',
                   hash: x.newBlock.hash,
                   miner: x.name,
+                });
+              } else {
+                this.blockchainService.enblockTransaction(transaction, x);
+                this.loggerService.logTransactionEnblocked({
+                  id: 0,
+                  type: 'TransactionEnblocked',
+                  transactionHash: transaction.hash,
+                  blockHash: x.newBlock?.hash ?? 'error',
+                  actor: x.name,
                 });
               }
             })

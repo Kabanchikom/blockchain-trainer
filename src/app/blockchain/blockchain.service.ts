@@ -111,14 +111,9 @@ export class BlockchainService {
       }
     }
 
-    if (this.isBlockReadyToComplete(newNode.newBlock)) {
-      this.completeBlock(newNode.newBlock, node);
-    } else {
-      newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
-      newNode.newBlock.transactions.push(transaction);
-    }
-
-    return true;
+    newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
+    newNode.newBlock.transactions.push(transaction);
+    this.nodes.next(newNodes);
   }
 
   isBlockReadyToComplete(block: IBlock) {
