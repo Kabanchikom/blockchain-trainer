@@ -9,7 +9,6 @@ import * as secp256k1 from 'secp256k1';
 import { hexStringToUint8Array, publicKeyToUncompressed, uint8ArrayToHexString } from '../misc/encodingHelpers';
 import { IBlock } from './models/block';
 import { getRandomInt } from '../misc/mathHelper';
-import { json } from 'd3';
 import { LoggerService } from '../command-handler/logger/logger.service';
 
 const transactionsInBlock = 5;
@@ -21,8 +20,6 @@ export class BlockchainService {
   nodes: BehaviorSubject<INode[]> = new BehaviorSubject<INode[]>([]);
 
   transactionBuffer: ITransaction[] = [];
-  transactionCounter: number = 0;
-
   blockBuffer: IBlock[] = [];
 
   broadcastTransactionSubject: Subject<{ transaction: ITransaction, node: INode }> = new Subject();
@@ -58,24 +55,9 @@ export class BlockchainService {
     const encodedSignature = secp256k1.ecdsaSign(hashBytes, privateKeyBytes).signature;
     const decodedSignature = uint8ArrayToHexString(encodedSignature);
 
-    // console.log('pubk', node.publicKey);
-    // console.log('prk', node.privateKey);
-    // console.log('sign', decodedSignature);
-    // console.log('hash', hash);
-
-    // const asd = secp256k1.publicKeyVerify(publicKeyToUncompressed(node.publicKey));
-    // const asdad = uint8ArrayToHexString(secp256k1.publicKeyCreate(privateKeyBytes))
-
-    // console.log(asdad);
-    // console.log(asd);
-
-
     const isValid = secp256k1.ecdsaVerify(encodedSignature, hashBytes, publicKeyToUncompressed(sender.publicKey));
 
-    // console.log(isValid);
-
     const transaction: ITransaction = {
-      id: ++this.transactionCounter,
       publicKey: sender.publicKey,
       hash: hash,
       signature: decodedSignature,
@@ -83,7 +65,7 @@ export class BlockchainService {
     };
 
     this.loggerService.log(`
-      Транзакция #${transaction.id} создана. 
+      Транзакция ${transaction.hash} создана. 
       Отправитель: ${sender.name}. 
       Получатель: ${receiver.name}. 
       Сумма: ${transaction.data.amount} BTC`);
@@ -96,7 +78,7 @@ export class BlockchainService {
     this.broadcastTransactionSubject.next({ transaction: transaction, node: node });
 
     this.loggerService.log(`
-      Транзакция #${transaction.id} распространяется по сети. 
+      Транзакция ${transaction.hash} распространяется по сети. 
       Отправитель: ${node.name}`);
   }
 
@@ -117,7 +99,7 @@ export class BlockchainService {
     this.receiveTransactionSubject.next(transaction);
 
     this.loggerService.log(`
-      Транзакция #${transaction.id} попадает в пул узла. 
+      Транзакция ${transaction.hash} попадает в пул узла. 
       Получатель: ${node.name}`);
   }
 
@@ -135,7 +117,6 @@ export class BlockchainService {
 
     if (newNode.newBlock === null) {
       newNode.newBlock = {
-        id: newNode.blockchain.chain.length,
         nonce: 0,
         previousHash: '',
         hash: '',
@@ -151,7 +132,7 @@ export class BlockchainService {
       newNode.newBlock.transactions.push(transaction);
 
       this.loggerService.log(`
-        Транзакция #${transaction.id} попадает в блок #${newNode.newBlock.id}. 
+        Транзакция ${transaction.hash} попадает в блок ${newNode.newBlock.hash}. 
         Инициатор: ${node.name}`);
     }
 
@@ -171,7 +152,7 @@ export class BlockchainService {
     const previousHash = node.blockchain.chain[node.blockchain.chain.length - 1].hash;
 
     const blockHeader = {
-      id: block.id,
+      id: block.hash,
       nonce: getRandomInt(0, Math.pow(2, 32)),
       previousHash: previousHash,
       timestamp: new Date(),
@@ -183,7 +164,7 @@ export class BlockchainService {
     const doubleHash = CryptoJS.SHA256(hash).toString();
 
     const newBlock = {
-      id: block.id,
+      id: block.hash,
       nonce: getRandomInt(0, Math.pow(2, 32)),
       timestamp: block.timestamp,
       previousHash: previousHash,
@@ -196,7 +177,7 @@ export class BlockchainService {
     this.nodes.next(newNodes);
 
     this.loggerService.log(`
-      Сгенерирован новый блок #${newBlock.id}. 
+      Сгенерирован новый блок ${newBlock.hash}. 
       Майнер: ${node.name}`);
   }
 
@@ -206,14 +187,14 @@ export class BlockchainService {
 
   broadcastBlock(block: IBlock, node: INode) {
     if (!this.isBlockCompleted(block)) {
-      throw new Error(`Блок с id=${node.id} не завершен`);
+      throw new Error(`Блок ${block.hash} не завершен`);
     }  
 
     this.blockBuffer.push(block);
     this.broadcastBlockSubject.next({ block: block, node: node });
 
     this.loggerService.log(`
-      Блок #${block.id} распространяется по сети. 
+      Блок ${block.hash} распространяется по сети. 
       Инициатор: ${node.name}`);
   }
 
@@ -244,23 +225,5 @@ export class BlockchainService {
 
     newNode.newBlock = null;
     this.nodes.next(newNodes);
-  }
-
-  experiment() {
-    const privateKey = this.nodes.value[0].privateKey;
-    console.log(privateKey);
-
-    const publicKeyBytes = secp256k1.publicKeyCreate(hexStringToUint8Array(privateKey));
-    const publicKey = uint8ArrayToHexString(publicKeyBytes);
-
-    console.log(publicKey);
-
-    const publicKeyBytesEncoded = hexStringToUint8Array(publicKey);
-    const publicKeyDecoded = uint8ArrayToHexString(publicKeyBytesEncoded);
-
-    console.log(publicKeyDecoded);
-
-    const isPublicKeyValid = secp256k1.publicKeyVerify(publicKeyBytesEncoded);
-    console.log(isPublicKeyValid);
   }
 }

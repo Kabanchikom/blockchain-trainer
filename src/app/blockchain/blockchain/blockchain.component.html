@@ -7,7 +7,6 @@
   </div>
   <ul class="list-group">
     <li class="list-group-item" *ngFor="let block of blockchain?.chain">
-      <p>Index: {{ block.id }}</p>
       <p>Transactions: {{ block.transactions }}</p>
       <p>Previous Hash: {{ block.previousHash }}</p>
       <p>Hash: {{ block.hash }}</p>
