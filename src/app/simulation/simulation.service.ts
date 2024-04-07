@@ -19,7 +19,7 @@ export class SimulationService {
 
   discardBlockSubject: Subject<IBlock> = new Subject<IBlock>();
 
-  totalTransactionsCreated = 0;
+  totalTransactions = 1;
 
   constructor(
     private blockchainService: BlockchainService,
@@ -45,7 +45,13 @@ export class SimulationService {
   
     switch(randomNumber) {
       case 1: {
-        this.tryCreateTransaction() || this.resetAction();
+        if (this.totalTransactions <= (this.nodes[0].blockchain!.chain.length * this.blockchainService.transactionsInBlock)) {
+          this.tryCreateTransaction() || this.resetAction();
+          break;
+        }
+
+        this.resetAction();
+
         break;
       }
 
@@ -102,9 +108,6 @@ export class SimulationService {
     }
   }
 
-  doRecieveBlock(i: number) {
-  }
-
   resetAction() {
     this.doAction();
   }
@@ -130,8 +133,14 @@ export class SimulationService {
     });
 
     sender.newTransaction = transaction;
-    this.totalTransactionsCreated++;
-    console.log(this.totalTransactionsCreated);
+
+    console.clear();
+
+    this.totalTransactions++;
+    console.log('totalCreated', this.totalTransactions);
+
+    const totalTransactionsInBlockchain = this.nodes[0].blockchain!.chain.flatMap((x: IBlock) => x.transactions).length;
+    console.log('totalTransactionsInBlockchain', totalTransactionsInBlockchain);
 
     return true;
   }
