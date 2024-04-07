@@ -38,7 +38,7 @@ export class SimulationService {
   }
 
   doAction() {
-    const randomNumber = getRandomInt(1, 7);
+    const randomNumber = getRandomInt(1, 5);
   
     switch(randomNumber) {
       case 1: {
@@ -68,21 +68,16 @@ export class SimulationService {
       }
 
       case 3: {
-        this.resetAction();
-        break;
-      }
-
-      case 4: {
         this.tryEnblockTransaction() || this.resetAction();
         break;
       }
 
-      case 5: {
+      case 4: {
         this.tryCompleteBlock() ||this.resetAction();
         break;
       }
 
-      case 6: {
+      case 5: {
         if(!this.tryBroadcastBlock()){
           this.resetAction();
           break;
@@ -99,11 +94,6 @@ export class SimulationService {
             }
           }, this.speed * (i + 1));
         }
-        break;
-      }
-
-      case 7: {
-        this.resetAction();
         break;
       }
     }
