@@ -20,6 +20,7 @@ export class SimulationService {
   discardBlockSubject: Subject<IBlock> = new Subject<IBlock>();
 
   totalTransactions = 1;
+  createdTransactions: ITransaction[] = [];
 
   constructor(
     private blockchainService: BlockchainService,
@@ -134,13 +135,22 @@ export class SimulationService {
 
     sender.newTransaction = transaction;
 
-    console.clear();
-
     this.totalTransactions++;
-    console.log('totalCreated', this.totalTransactions);
+    //console.log('totalCreated', this.totalTransactions);
+    // this.createdTransactions.push(transaction);
 
-    const totalTransactionsInBlockchain = this.nodes[0].blockchain!.chain.flatMap((x: IBlock) => x.transactions).length;
-    console.log('totalTransactionsInBlockchain', totalTransactionsInBlockchain);
+    // const blockchainTransactions = this.nodes[0].blockchain!.chain.flatMap((x: IBlock) => x.transactions);
+
+    // console.clear();
+
+    // for (let i = 0; i < this.createdTransactions.length; i++) {
+    //   console.log(i, this.createdTransactions[i], blockchainTransactions.find(x => x.hash === this.createdTransactions[i].hash));
+    // }
+
+    // debugger;
+
+    // const totalTransactionsInBlockchain = this.nodes[0].blockchain!.chain.flatMap((x: IBlock) => x.transactions).length;
+    //console.log('totalTransactionsInBlockchain', totalTransactionsInBlockchain);
 
     return true;
   }
@@ -294,31 +304,31 @@ export class SimulationService {
 
   tryReceiveBlock(recieverIndex: number) {
     if (!this.pendingBlock) {
-      console.log('no pending block', this.pendingBlock);
+      // console.log('no pending block', this.pendingBlock);
       return false;
     }
 
     if (this.pendingBlock.recievedBy.length >= this.nodes.length) {
-      console.log('pending block recieved by all nodes', this.pendingBlock);
+      // console.log('pending block recieved by all nodes', this.pendingBlock);
       this.pendingBlock.recievedBy = [];
       return false;
     }
 
     if (this.pendingBlock.recievedBy.find(x => x === recieverIndex)) {
-      console.log('already recieved by this node', this.pendingBlock);
+      //console.log('already recieved by this node', this.pendingBlock);
       return false;
     }
 
     const reciever = this.nodes[recieverIndex];
 
     if (this.blockchainService.hasBlock(this.pendingBlock.block, reciever)) {
-      console.log('reciever already has this block', this.pendingBlock);
+      //console.log('reciever already has this block', this.pendingBlock);
       this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }
 
     if (!this.blockchainService.isSubsequenceCorrect(this.pendingBlock.block, reciever)) {
-      console.log('current hash not equal with prev', this.pendingBlock);
+      //console.log('current hash not equal with prev', this.pendingBlock);
       this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }
