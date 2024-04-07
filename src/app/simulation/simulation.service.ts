@@ -12,7 +12,7 @@ import { IBlock } from '../blockchain/models/block';
   providedIn: 'root'
 })
 export class SimulationService {
-  readonly speed = 100;
+  readonly speed = 1000;
   nodes: INode[] = [];
   pendingTransaction: { transaction: ITransaction, recievedBy: number[] } | null = null;
   pendingBlock: { block: IBlock, recievedBy: number[] } | null = null;
@@ -47,12 +47,28 @@ export class SimulationService {
       }
 
       case 2: {
-        this.tryBroadcastTransaction() || this.resetAction();
+        if (!this.tryBroadcastTransaction()) {
+          this.resetAction();
+          break;
+        }
+
+        const shuffledIndexes = this.nodes.map((_, index) => index).sort(() => Math.random() - 0.5);
+
+        this.isWaiting = true;
+        for(let i = 0; i < shuffledIndexes.length; i++) {
+          setTimeout(() => {
+            this.tryRecieveTransaction(shuffledIndexes[i]);
+
+            if(i === shuffledIndexes.length - 1) {
+              this.isWaiting = false;
+            }
+          }, this.speed * (i + 1));
+        }
         break;
       }
 
       case 3: {
-        this.tryRecieveTransaction() || this.resetAction();
+        this.resetAction();
         break;
       }
 
@@ -81,7 +97,7 @@ export class SimulationService {
             if(i === shuffledIndexes.length - 1) {
               this.isWaiting = false;
             }
-          }, this.speed * i);
+          }, this.speed * (i + 1));
         }
         break;
       }
@@ -149,7 +165,7 @@ export class SimulationService {
     return true;
   }
 
-  tryRecieveTransaction() {
+  tryRecieveTransaction(recieverIndex: number) {
     if (!this.pendingTransaction) {
       return false;
     }
@@ -158,8 +174,6 @@ export class SimulationService {
       this.pendingTransaction.recievedBy = [];
       return false;
     }
-
-    const recieverIndex = getRandomInt(0, this.nodes.length - 1);
 
     if (this.pendingTransaction.recievedBy.find(x => x === recieverIndex)) {
       return false;
