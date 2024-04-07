@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BlockchainService } from '../blockchain/blockchain.service';
-import { getRandomInt, shuffleArray } from '../misc/mathHelper';
+import { getRandomInt, hasDuplicates } from '../misc/mathHelper';
 import { INode } from '../blockchain/models/node';
-import { setRandomInterval, setRandomDelay } from '../misc/delayHelper';
-import { Subject, concatMap, delay, delayWhen, from, merge, mergeMap, of, switchMap, take, takeUntil, takeWhile, tap, timer, toArray } from 'rxjs';
+import { Subject } from 'rxjs';
 import { LoggerService } from '../command-handler/logger/logger.service';
 import { ITransaction } from '../blockchain/models/transaction';
 import { IBlock } from '../blockchain/models/block';
@@ -19,6 +18,8 @@ export class SimulationService {
   isWaiting = false;
 
   discardBlockSubject: Subject<IBlock> = new Subject<IBlock>();
+
+  totalTransactionsCreated = 0;
 
   constructor(
     private blockchainService: BlockchainService,
@@ -129,6 +130,8 @@ export class SimulationService {
     });
 
     sender.newTransaction = transaction;
+    this.totalTransactionsCreated++;
+    console.log(this.totalTransactionsCreated);
 
     return true;
   }
@@ -173,6 +176,10 @@ export class SimulationService {
 
     const reciever = this.nodes[recieverIndex];
 
+    if (reciever.transactionPool?.find(x => x.hash === this.pendingTransaction?.transaction.hash)) {
+      return false;
+    }
+
     this.blockchainService.receiveTransaction(this.pendingTransaction.transaction, reciever);
 
     this.loggerService.logTransactionReceived({
@@ -202,6 +209,12 @@ export class SimulationService {
     const transaction = actor.transactionPool.pop();
 
     if (!transaction) {
+      return false;
+    }
+
+    const actorTransactions = actor.blockchain?.chain.flatMap((x: IBlock) => x.transactions);
+
+    if (actorTransactions?.find(x => x.hash === transaction.hash)) {
       return false;
     }
 
@@ -297,6 +310,14 @@ export class SimulationService {
 
     if (!this.blockchainService.isSubsequenceCorrect(this.pendingBlock.block, reciever)) {
       console.log('current hash not equal with prev', this.pendingBlock);
+      this.discardBlockSubject.next(this.pendingBlock.block);
+      return false;
+    }
+
+    const recieverTransactions = [...reciever.blockchain!.chain.flatMap((x: IBlock) => x.transactions), ...this.pendingBlock.block.transactions];
+    const hashArray = recieverTransactions.map(x => x.hash);
+
+    if (hasDuplicates(hashArray)) {
       this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }

@@ -70,7 +70,6 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
       x => {
         setTimeout(() => {
           this.blockItems = this.blockItems.filter(y => {
-            console.log(y.block, x);
             return y.block.hash !== x.hash}
           );
         }, this.simulationService.speed + this.simulationService.speed / 2);
