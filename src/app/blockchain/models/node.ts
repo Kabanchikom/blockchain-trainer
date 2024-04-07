@@ -7,6 +7,7 @@ export interface INode {
     name: string;
     blockchain: Blockchain | null;
     newBlock: IBlock | null;
+    newTransaction: ITransaction | null;
     transactionPool: ITransaction[];
     publicKey: string;
     privateKey: string;

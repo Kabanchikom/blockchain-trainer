@@ -47,7 +47,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
     this.blockchainService.receiveTransactionSubject.subscribe(
       x => {
         setTimeout(() => {
-          this.transactionItems = this.transactionItems.filter(y => y.transaction !== x);
+          this.transactionItems = this.transactionItems = [];
         }, 2000);
       }
     );
@@ -63,7 +63,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
     this.blockchainService.receiveBlockSubject.subscribe(
       x => {
         setTimeout(() => {
-          this.blockItems = this.blockItems.filter(y => y.block !== x);
+          this.blockItems = this.blockItems = [];
         }, 2000);
       }
     );

@@ -13,7 +13,7 @@ export const setDelay = (ms: number) => {
 }
 
 export const randomInterval = (min: number, max: number): Observable<number> => {
-    return timer(Math.random() * (max - min) + min).pipe(
+    return timer(Math.random() * (max - min)).pipe(
         map(() => Math.random() * (max - min) + min)
     );
 }

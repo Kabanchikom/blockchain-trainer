@@ -39,7 +39,6 @@ export class LoggerComponent implements OnInit {
   }
 
   onMouseUp(): void {
-    console.log(window.getSelection());
     if (!window.getSelection()?.toString()) {
       this.isSelecting = false;
     }

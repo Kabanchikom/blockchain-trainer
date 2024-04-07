@@ -111,7 +111,7 @@ export class BlockchainService {
       }
     }
 
-    newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
+    //newNode.transactionPool = newNode.transactionPool.filter(x => x.hash !== transaction.hash);
     newNode.newBlock.transactions.push(transaction);
     this.nodes.next(newNodes);
   }

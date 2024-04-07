@@ -27,7 +27,8 @@
             ]
         },
         "transactionPool": [],
-        "newBlock": null
+        "newBlock": null,
+        "newTransaction": null
     },
     {
         "id": 2,
@@ -57,7 +58,8 @@
             ]
         },
         "transactionPool": [],
-        "newBlock": null
+        "newBlock": null,
+        "newTransaction": null
     },
     {
         "id": 3,
@@ -87,7 +89,8 @@
             ]
         },
         "transactionPool": [],
-        "newBlock": null
+        "newBlock": null,
+        "newTransaction": null
     },
     {
         "id": 4,
@@ -117,7 +120,8 @@
             ]
         },
         "transactionPool": [],
-        "newBlock": null
+        "newBlock": null,
+        "newTransaction": null
     },
     {
         "id": 5,
@@ -147,6 +151,7 @@
             ]
         },
         "transactionPool": [],
-        "newBlock": null
+        "newBlock": null,
+        "newTransaction": null
     }
 ]
