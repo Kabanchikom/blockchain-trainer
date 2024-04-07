@@ -11,12 +11,12 @@ import { IBlock } from './models/block';
 import { getRandomInt } from '../misc/mathHelper';
 import { LoggerService } from '../command-handler/logger/logger.service';
 
-const transactionsInBlock = 5;
-
 @Injectable({
   providedIn: 'root'
 })
 export class BlockchainService {
+  readonly transactionsInBlock = 3;
+
   nodes: BehaviorSubject<INode[]> = new BehaviorSubject<INode[]>([]);
 
   transactionBuffer: ITransaction[] = [];
@@ -117,7 +117,7 @@ export class BlockchainService {
   }
 
   isBlockReadyToComplete(block: IBlock) {
-    return block.transactions.length === transactionsInBlock;
+    return block.transactions.length === this.transactionsInBlock;
   }
 
   completeBlock(block: IBlock, node: INode) {
@@ -165,6 +165,28 @@ export class BlockchainService {
 
     this.blockBuffer.push(block);
     this.broadcastBlockSubject.next({ block: block, node: node });
+  }
+
+  hasBlock(block: IBlock, node: INode) {
+    if (node.blockchain?.chain.find(x => x.hash === block.hash)) {
+      return true
+    }
+
+    return false;
+  }
+
+  isSubsequenceCorrect(block: IBlock, node: INode) {
+    if (!node.blockchain) {
+      throw new Error(`Блокчейн узла с id=${node.id} не инициализирован`);
+    }
+
+    const chain = node.blockchain.chain;
+
+    if (node.blockchain.chain[chain.length - 1].hash !== block.previousHash) {
+      return false
+    }
+
+    return true;
   }
 
   receiveBlock(block: IBlock, node: INode) {

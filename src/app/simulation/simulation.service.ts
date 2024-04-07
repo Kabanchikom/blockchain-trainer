@@ -12,9 +12,11 @@ import { IBlock } from '../blockchain/models/block';
   providedIn: 'root'
 })
 export class SimulationService {
+  readonly speed = 100;
   nodes: INode[] = [];
   pendingTransaction: { transaction: ITransaction, recievedBy: number[] } | null = null;
   pendingBlock: { block: IBlock, recievedBy: number[] } | null = null;
+  isWaiting = false;
 
   constructor(
     private blockchainService: BlockchainService,
@@ -29,8 +31,10 @@ export class SimulationService {
 
   simulate() {
     setInterval(() => {
-      this.doAction();
-    }, 3000);
+      if (!this.isWaiting) {
+        this.doAction();
+      }
+    }, this.speed);
   }
 
   doAction() {
@@ -63,21 +67,37 @@ export class SimulationService {
       }
 
       case 6: {
-        this.tryBroadcastBlock() || this.resetAction();
+        if(!this.tryBroadcastBlock()){
+          this.resetAction();
+          break;
+        }
+        const shuffledIndexes = this.nodes.map((_, index) => index).sort(() => Math.random() - 0.5);
+
+        this.isWaiting = true;
+        for(let i = 0; i < shuffledIndexes.length; i++) {
+          setTimeout(() => {
+            this.tryReceiveBlock(shuffledIndexes[i]);
+
+            if(i === shuffledIndexes.length - 1) {
+              this.isWaiting = false;
+            }
+          }, this.speed * i);
+        }
         break;
       }
 
       case 7: {
-        this.tryReceiveBlock() || this.resetAction();
+        this.resetAction();
         break;
       }
     }
   }
 
+  doRecieveBlock(i: number) {
+  }
+
   resetAction() {
-    setTimeout(() => {
-      this.doAction();
-    }, 0);
+    this.doAction();
   }
 
   tryCreateTransaction() {
@@ -169,7 +189,7 @@ export class SimulationService {
       return false;
     }
 
-    if ((actor.newBlock?.transactions.length ?? 0) >= 5) {
+    if ((actor.newBlock?.transactions.length ?? 0) >= this.blockchainService.transactionsInBlock) {
       return false;
     }
 
@@ -244,23 +264,34 @@ export class SimulationService {
     return true;
   }
 
-  tryReceiveBlock() {
+  tryReceiveBlock(recieverIndex: number) {
     if (!this.pendingBlock) {
+      console.log('no pending block', this.pendingBlock);
       return false;
     }
 
     if (this.pendingBlock.recievedBy.length >= this.nodes.length) {
+      console.log('pending block recieved by all nodes', this.pendingBlock);
       this.pendingBlock.recievedBy = [];
       return false;
     }
 
-    const recieverIndex = getRandomInt(0, this.nodes.length - 1);
-
     if (this.pendingBlock.recievedBy.find(x => x === recieverIndex)) {
+      console.log('already recieved by this node', this.pendingBlock);
       return false;
     }
 
     const reciever = this.nodes[recieverIndex];
+
+    if (this.blockchainService.hasBlock(this.pendingBlock.block, reciever)) {
+      console.log('reciever already has this block', this.pendingBlock);
+      return false;
+    }
+
+    if (!this.blockchainService.isSubsequenceCorrect(this.pendingBlock.block, reciever)) {
+      // console.log('current hash not equal with prev', this.pendingBlock);
+      return false;
+    }
 
     this.blockchainService.receiveBlock(this.pendingBlock.block, reciever);
 
@@ -275,6 +306,29 @@ export class SimulationService {
 
     return true;
   }
+
+  // tryReceiveBlockAllNodes() {
+  //   if (!this.pendingBlock) {
+  //     return false;
+  //   }
+
+  //   if (this.pendingBlock.recievedBy.length >= this.nodes.length) {
+  //     this.pendingBlock.recievedBy = [];
+  //     return false;
+  //   }
+
+  //   for (let i = 0; i < this.nodes.length - 1; i++) {
+  //     const reciever = this.nodes[i];
+  //     if (i === 0 || i === this.nodes.length - 1) {
+
+  //       continue;
+  //     }
+
+  //     setTimeout(() => {
+        
+  //     }, 3000)
+  //   }
+  // }
 
   private randomizeTransactionNodes(): { senderIndex: number, receiverIndex: number } {
     const nodesCount = this.nodes.length;
