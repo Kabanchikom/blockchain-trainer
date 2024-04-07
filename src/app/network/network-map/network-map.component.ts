@@ -7,6 +7,7 @@ import { BlockchainService } from 'src/app/blockchain/blockchain.service';
 import { ITransaction } from 'src/app/blockchain/models/transaction';
 import { BlockItem } from './networkItems/blockItem';
 import { IBlock } from 'src/app/blockchain/models/block';
+import { SimulationService } from 'src/app/simulation/simulation.service';
 
 @Component({
   selector: 'app-network-map',
@@ -24,11 +25,14 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
 
   canvasWidth: number = 862;
 
+  speed = 0;
+
   private transactionItems: TransactionItem[] = [];
   private blockItems: BlockItem[] = [];
 
   constructor(
-    private blockchainService: BlockchainService
+    private blockchainService: BlockchainService,
+    private simulationService: SimulationService
   ) {}
 
   ngAfterViewInit(): void {
@@ -36,6 +40,8 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.speed = (1000 / this.simulationService.speed) * 5;
+
     this.blockchainService.broadcastTransactionSubject.subscribe(
       x => {
         const {transaction, node} = x;
@@ -47,8 +53,8 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
     this.blockchainService.receiveTransactionSubject.subscribe(
       x => {
         setTimeout(() => {
-          this.transactionItems = this.transactionItems = [];
-        }, 2000);
+          this.transactionItems = this.transactionItems.filter(y => y.transaction.hash !== x.hash);
+        }, this.simulationService.speed + this.simulationService.speed / 2);
       }
     );
 
@@ -63,8 +69,19 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
     this.blockchainService.receiveBlockSubject.subscribe(
       x => {
         setTimeout(() => {
-          this.blockItems = this.blockItems = [];
-        }, 2000);
+          this.blockItems = this.blockItems.filter(y => {
+            console.log(y.block, x);
+            return y.block.hash !== x.hash}
+          );
+        }, this.simulationService.speed + this.simulationService.speed / 2);
+      }
+    );
+
+    this.simulationService.discardBlockSubject.subscribe(
+      x => {
+        setTimeout(() => {
+          this.blockItems = this.blockItems.filter(y => y.block.hash !== x.hash);
+        }, this.simulationService.speed + this.simulationService.speed / 2);
       }
     );
 
@@ -78,10 +95,6 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
           new NodeItem(0, 200, x[4])
         ]
         this.initAll();
-        // const transaction = this.blockchainService.createTransaction(this.nodes[0].node, this.nodes[1].node.publicKey, 10);
-        // this.blockchainService.broadcastTransaction(transaction);
-        // this.blockchainService.recieveTransactionAllNodes(transaction);
-        // this.blockchainService.enblockTransactionAllNodes(transaction);
       }
     );
   }
@@ -93,8 +106,6 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
       x: this.networkMap.nativeElement.width / 2,
       y: this.networkMap.nativeElement.height / 2
     };
-
-    
 
     this.context.translate(centerPos.x - this.internetItem.width, centerPos.y - this.internetItem.height);
     this.context.setLineDash([4, 2]);
@@ -110,7 +121,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
     item.draw(this.context);
 
     if (item.isMoving()) {
-      item.move();
+      item.move(this.speed);
     }
   }
 
@@ -144,14 +155,14 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
   }
 
   private drawBlockItem(item: BlockItem) {
-    if(this.transactionItems.length === 0) {
+    if(this.blockItems.length === 0) {
       return;
     }
 
     item.draw(this.context);
 
     if (item.isMoving()) {
-      item.move();
+      item.move(this.speed);
     }
   }
 

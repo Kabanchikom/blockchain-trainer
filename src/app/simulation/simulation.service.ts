@@ -3,7 +3,7 @@ import { BlockchainService } from '../blockchain/blockchain.service';
 import { getRandomInt, shuffleArray } from '../misc/mathHelper';
 import { INode } from '../blockchain/models/node';
 import { setRandomInterval, setRandomDelay } from '../misc/delayHelper';
-import { concatMap, delay, delayWhen, from, merge, mergeMap, of, switchMap, take, takeUntil, takeWhile, tap, timer, toArray } from 'rxjs';
+import { Subject, concatMap, delay, delayWhen, from, merge, mergeMap, of, switchMap, take, takeUntil, takeWhile, tap, timer, toArray } from 'rxjs';
 import { LoggerService } from '../command-handler/logger/logger.service';
 import { ITransaction } from '../blockchain/models/transaction';
 import { IBlock } from '../blockchain/models/block';
@@ -12,11 +12,13 @@ import { IBlock } from '../blockchain/models/block';
   providedIn: 'root'
 })
 export class SimulationService {
-  readonly speed = 1000;
+  readonly speed = 500;
   nodes: INode[] = [];
   pendingTransaction: { transaction: ITransaction, recievedBy: number[] } | null = null;
   pendingBlock: { block: IBlock, recievedBy: number[] } | null = null;
   isWaiting = false;
+
+  discardBlockSubject: Subject<IBlock> = new Subject<IBlock>();
 
   constructor(
     private blockchainService: BlockchainService,
@@ -289,11 +291,13 @@ export class SimulationService {
 
     if (this.blockchainService.hasBlock(this.pendingBlock.block, reciever)) {
       console.log('reciever already has this block', this.pendingBlock);
+      this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }
 
     if (!this.blockchainService.isSubsequenceCorrect(this.pendingBlock.block, reciever)) {
-      // console.log('current hash not equal with prev', this.pendingBlock);
+      console.log('current hash not equal with prev', this.pendingBlock);
+      this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }
 
@@ -310,29 +314,6 @@ export class SimulationService {
 
     return true;
   }
-
-  // tryReceiveBlockAllNodes() {
-  //   if (!this.pendingBlock) {
-  //     return false;
-  //   }
-
-  //   if (this.pendingBlock.recievedBy.length >= this.nodes.length) {
-  //     this.pendingBlock.recievedBy = [];
-  //     return false;
-  //   }
-
-  //   for (let i = 0; i < this.nodes.length - 1; i++) {
-  //     const reciever = this.nodes[i];
-  //     if (i === 0 || i === this.nodes.length - 1) {
-
-  //       continue;
-  //     }
-
-  //     setTimeout(() => {
-        
-  //     }, 3000)
-  //   }
-  // }
 
   private randomizeTransactionNodes(): { senderIndex: number, receiverIndex: number } {
     const nodesCount = this.nodes.length;

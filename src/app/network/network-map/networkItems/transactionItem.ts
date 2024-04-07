@@ -29,8 +29,9 @@ export class TransactionItem {
         ctx.closePath();
     }
 
-    public move(): void {
+    public move(speed: number): void {
         if (!this.moving) return; // Если не двигаемся, выходим из метода
+        this.speed = speed;
 
         const currentTarget = this.targets[this.currentTargetIndex];
         const dx = currentTarget.x - this.x;
