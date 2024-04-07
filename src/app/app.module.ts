@@ -9,6 +9,7 @@ import { NetworkModule } from './network/network.module';
 import { NodeListComponent } from './nodes/node-list/node-list.component';
 import { SimulationControlsComponent } from './simulation/simulation-controls/simulation-controls.component';
 import { LoggerComponent } from './command-handler/logger/logger.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { LoggerComponent } from './command-handler/logger/logger.component';
     BrowserModule,
     AppRoutingModule,
     BlockchainModule,
+    FormsModule,
     NetworkModule,
     NgbModule
   ],

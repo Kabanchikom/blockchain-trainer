@@ -25,6 +25,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
 
   canvasWidth: number = 862;
 
+  timeRate: number = 0;
   speed = 0;
 
   private transactionItems: TransactionItem[] = [];
@@ -40,7 +41,13 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.speed = (1000 / this.simulationService.speed) * 5;
+    
+    this.simulationService.timeRate.subscribe(
+      x => {
+        this.timeRate = x;
+        this.speed = (1000 / this.timeRate) * 5;
+      }
+    );
 
     this.blockchainService.broadcastTransactionSubject.subscribe(
       x => {
@@ -54,7 +61,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
       x => {
         setTimeout(() => {
           this.transactionItems = this.transactionItems.filter(y => y.transaction.hash !== x.hash);
-        }, this.simulationService.speed + this.simulationService.speed / 2);
+        }, this.timeRate + this.timeRate / 2);
       }
     );
 
@@ -72,7 +79,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
           this.blockItems = this.blockItems.filter(y => {
             return y.block.hash !== x.hash}
           );
-        }, this.simulationService.speed + this.simulationService.speed / 2);
+        }, this.timeRate + this.timeRate / 2);
       }
     );
 
@@ -80,7 +87,7 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
       x => {
         setTimeout(() => {
           this.blockItems = this.blockItems.filter(y => y.block.hash !== x.hash);
-        }, this.simulationService.speed + this.simulationService.speed / 2);
+        }, this.timeRate + this.timeRate / 2);
       }
     );
 

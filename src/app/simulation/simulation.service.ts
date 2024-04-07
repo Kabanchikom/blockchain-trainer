@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { getRandomInt, hasDuplicates } from '../misc/mathHelper';
 import { INode } from '../blockchain/models/node';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { LoggerService } from '../command-handler/logger/logger.service';
 import { ITransaction } from '../blockchain/models/transaction';
 import { IBlock } from '../blockchain/models/block';
@@ -11,11 +11,14 @@ import { IBlock } from '../blockchain/models/block';
   providedIn: 'root'
 })
 export class SimulationService {
-  readonly speed = 500;
+  timeRate: BehaviorSubject<number> = new BehaviorSubject(0);
+  isWaiting = false;
+  isPaused = false;
+  intervalId: any;
+
   nodes: INode[] = [];
   pendingTransaction: { transaction: ITransaction, recievedBy: number[] } | null = null;
   pendingBlock: { block: IBlock, recievedBy: number[] } | null = null;
-  isWaiting = false;
 
   discardBlockSubject: Subject<IBlock> = new Subject<IBlock>();
 
@@ -33,12 +36,27 @@ export class SimulationService {
     );
   }
 
+  setTimerate(timeRate: number) {
+    if (timeRate > 100000 || timeRate === Infinity) {
+      this.isPaused = true;
+    } else {
+      this.isPaused = false;
+      this.timeRate.next(timeRate);
+      this.restartSimulation();
+    }
+  }
+
   simulate() {
-    setInterval(() => {
-      if (!this.isWaiting) {
+    this.intervalId = setInterval(() => {
+      if (!this.isWaiting && !this.isPaused) {
         this.doAction();
       }
-    }, this.speed);
+    }, this.timeRate.value);
+  }
+
+  restartSimulation() {
+    clearInterval(this.intervalId);
+    this.simulate();
   }
 
   doAction() {
@@ -72,7 +90,7 @@ export class SimulationService {
             if(i === shuffledIndexes.length - 1) {
               this.isWaiting = false;
             }
-          }, this.speed * (i + 1));
+          }, this.timeRate.value * (i + 1));
         }
         break;
       }
@@ -102,7 +120,7 @@ export class SimulationService {
             if(i === shuffledIndexes.length - 1) {
               this.isWaiting = false;
             }
-          }, this.speed * (i + 1));
+          }, this.timeRate.value * (i + 1));
         }
         break;
       }

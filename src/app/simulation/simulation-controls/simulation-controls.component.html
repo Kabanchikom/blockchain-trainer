@@ -1,4 +1,12 @@
 <div class="simulation-controls d-flex justify-space-between gap-4">
     <label for="speed_control" class="form-label text-secondary">Скорость</label>
-    <input type="range" class="form-range" id="speed_control">
+    <input
+        type="range"
+        class="form-range"
+        id="speed_control"
+        [min]="minSpeed"
+        [max]="maxSpeed"
+        [(ngModel)]="speed"
+        (input)="onSpeedChange($event)"
+    >
 </div>
