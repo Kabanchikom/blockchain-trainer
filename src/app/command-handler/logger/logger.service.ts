@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ILogItem } from './models/ILogItem';
-import { BlockBroadcasted, BlockGenerated, TransactionBroadcasted, TransactionCreated, TransactionEnblocked, TransactionRecieved } from './models/logItems';
+import { BlockBroadcasted, BlockGenerated, BlockRecieved, TransactionBroadcasted, TransactionCreated, TransactionEnblocked, TransactionRecieved } from './models/logItems';
 
 const maxLength = 100;
 
@@ -46,6 +46,10 @@ export class LoggerService {
   }
 
   logBlockBroadcasted(item: BlockBroadcasted) {
+    this.log(item);
+  }
+
+  logBlockRecieved(item: BlockRecieved) {
     this.log(item);
   }
 }

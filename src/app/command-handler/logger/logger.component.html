@@ -32,7 +32,6 @@
                 <p class="text-success">{{ x.id }}. Транзакция попадает в блок</p>
                 <span class="text-secondary">
                     <p>Хэш транзакции: {{ x.transactionHash }}</p>
-                    <p>Хэш блока: {{ x.blockHash }}</p>
                     <p>Инициатор: {{ x.actor }}</p>
                 </span>
             </span>
@@ -46,10 +45,18 @@
             </span>
 
             <span *ngIf="isBlockBroadcasted(x)">
-                <p class="text-success">{{ x.id }}. Новый блок распространяется по сети/p>
+                <p class="text-success">{{ x.id }}. Новый блок распространяется по сети</p>
                 <span class="text-secondary">
                     <p>Хэш блока: {{ x.hash }}</p>
                     <p>Отправитель: {{ x.sender }}</p>
+                </span>
+            </span>
+
+            <span *ngIf="isBlockRecieved(x)">
+                <p class="text-success">{{ x.id }}. Новый блок добавляется к блокчейну узла</p>
+                <span class="text-secondary">
+                    <p>Хэш блока: {{ x.hash }}</p>
+                    <p>Получатель: {{ x.reciever }}</p>
                 </span>
             </span>
         </div>

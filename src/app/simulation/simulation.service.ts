@@ -184,7 +184,6 @@ export class SimulationService {
       id: 0,
       type: 'TransactionEnblocked',
       transactionHash: transaction.hash,
-      blockHash: actor.newBlock?.hash ?? 'error',
       actor: actor.name,
     });
 
@@ -264,6 +263,13 @@ export class SimulationService {
     const reciever = this.nodes[recieverIndex];
 
     this.blockchainService.receiveBlock(this.pendingBlock.block, reciever);
+
+    this.loggerService.logBlockRecieved({
+      type: 'BlockRecieved',
+      id: 0,
+      hash: this.pendingBlock.block.hash,
+      reciever: reciever.name,
+    });
 
     this.pendingBlock.recievedBy.push(recieverIndex);
 

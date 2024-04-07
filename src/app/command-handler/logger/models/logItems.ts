@@ -27,7 +27,6 @@ export class TransactionEnblocked implements ILogItem {
     type = 'TransactionEnblocked';
     id = 0;
     transactionHash = '';
-    blockHash = '';
     actor = '';
 }
 
@@ -43,4 +42,11 @@ export class BlockBroadcasted implements ILogItem {
     id = 0;
     hash = '';
     sender = '';
+}
+
+export class BlockRecieved implements ILogItem {
+    type = 'BlockRecieved';
+    id = 0;
+    hash = '';
+    reciever = '';
 }
