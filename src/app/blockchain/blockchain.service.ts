@@ -147,11 +147,12 @@ export class BlockchainService {
 
     const previousHash = newNode.blockchain.chain[newNode.blockchain.chain.length - 1].hash;
 
+    const timestamp = new Date()
     const blockHeader = {
       id: block.hash,
       nonce: getRandomInt(0, Math.pow(2, 32)),
       previousHash: previousHash,
-      timestamp: new Date(),
+      timestamp: timestamp,
       transactions: block.transactions
     };
 
@@ -162,7 +163,7 @@ export class BlockchainService {
     const newBlock = {
       id: block.hash,
       nonce: getRandomInt(0, Math.pow(2, 32)),
-      timestamp: block.timestamp,
+      timestamp: timestamp,
       previousHash: previousHash,
       hash: doubleHash,
       transactions: structuredClone(block.transactions)
