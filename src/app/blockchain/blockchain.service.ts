@@ -217,4 +217,27 @@ export class BlockchainService {
     newNode.newBlock = null;
     this.nodes.next(newNodes);
   }
+
+  getBalance(publicKey: string): number | null {
+    const node = this.nodes.value.find(x => x.publicKey === publicKey);
+
+    if (!node) {
+      return null;
+    }
+
+    const transactions = node.blockchain?.chain
+    .flatMap((x: IBlock) => x.transactions.flatMap(y => y.data));
+
+    const fromTransactions = transactions?.filter(x => x.fromAddress === publicKey);
+    const toTransactions = transactions?.filter(x => x.toAddress === publicKey);
+
+    const spendedCurrency = fromTransactions?.reduce((accumulator ,y) => accumulator + y.amount, 0);
+    const recievedCurrency = toTransactions?.reduce((accumulator ,y) => accumulator + y.amount, 0);
+
+    if (!transactions) {
+      return null;
+    }
+
+    return (recievedCurrency ?? 0) - (spendedCurrency ?? 0);
+  }
 }

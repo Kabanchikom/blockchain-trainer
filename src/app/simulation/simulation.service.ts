@@ -139,8 +139,18 @@ export class SimulationService {
       return false;
     }
 
+    const amount = getRandomInt(10, 1000, 10);
+
+    if (sender.newTransaction) {
+      return false;
+    }
+
+    if((this.blockchainService?.getBalance(sender.publicKey) ?? 0) < amount) {
+      return false;
+    }
+
     const transaction = this.blockchainService.createTransaction(
-      sender, this.nodes[receiverIndex], this.nodes[receiverIndex].publicKey, 10);
+      sender, this.nodes[receiverIndex], this.nodes[receiverIndex].publicKey, amount);
 
     this.loggerService.logTransactionCreated({
       id: 0,
@@ -369,7 +379,7 @@ export class SimulationService {
     });
 
     this.pendingBlock.recievedBy.push(recieverIndex);
-
+    
     return true;
   }
 

@@ -1,5 +1,8 @@
-export const getRandomInt = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+export const getRandomInt = (min: number, max: number, multiple: number = 1) => {
+    const range = Math.floor((max - min) / multiple) + 1; 
+    const randomNumber = Math.floor(Math.random() * range);
+
+    return min + randomNumber * multiple;
 }
 
 export const shuffleArray = (array: any[]): any[] => {
