@@ -55,4 +55,8 @@ export class BlockItem {
     public isMoving(): boolean {
         return this.moving;
     }
+
+    public setImg(img: string) {
+        this.img = img;
+    }
 }

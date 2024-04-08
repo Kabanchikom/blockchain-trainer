@@ -59,6 +59,12 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
 
     this.blockchainService.receiveTransactionSubject.subscribe(
       x => {
+        const transactions = this.transactionItems.filter(y => x.hash === y.transaction.hash);
+
+        transactions.forEach(x => {
+          x?.setImg('./assets/img/currency-bitcoin-success.svg');
+        });
+
         setTimeout(() => {
           this.transactionItems = this.transactionItems.filter(y => y.transaction.hash !== x.hash);
         }, this.timeRate + this.timeRate / 2);
@@ -78,6 +84,12 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
         let node = this.nodes.find(y => y.node.id === x.node.id);
         node?.setBalance(this.blockchainService.getBalance(x.node.publicKey) ?? 0);
 
+        const blocks = this.blockItems.filter(y => x.block.hash === y.block.hash);
+
+        blocks.forEach(x => {
+          x?.setImg('./assets/img/box-success.svg');
+        });
+
         setTimeout(() => {
           this.blockItems = this.blockItems.filter(y => {
             return y.block.hash !== x.block.hash}
@@ -88,6 +100,12 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
 
     this.simulationService.discardBlockSubject.subscribe(
       x => {
+        const blocks = this.blockItems.filter(y => x.hash === y.block.hash);
+
+        blocks.forEach(x => {
+          x?.setImg('./assets/img/box-danger.svg');
+        });
+
         setTimeout(() => {
           this.blockItems = this.blockItems.filter(y => y.block.hash !== x.hash);
         }, this.timeRate + this.timeRate / 2);
