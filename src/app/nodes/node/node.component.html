@@ -1,0 +1,109 @@
+<div *ngIf="showNode" class="node card d-flex flex-column p-2 gap-2">
+    <h5 class="card-title text-center text-primary">
+        <b><i class="bi bi-pc-display"></i> {{ node?.name }}</b>
+        <button class="close-btn" aria-label="Close" (click)="closeNode()">&times;</button>
+    </h5>
+
+    <div class="form-group">
+        <label for="nonce">Публичный ключ</label>
+        <input id="nonce" class="form-control" type="text" disabled [value]="node?.publicKey">
+    </div>
+
+    <div class="form-group">
+        <label for="timestamp">Приватный ключ</label>
+        <input id="timestamp" class="form-control" type="text" disabled [value]="node?.privateKey">
+    </div>
+
+    <label></label>
+    <!-- <button class="btn btn-primary dropdown-toggle" (click)="onTransactionsClick()">Транзакции</button> -->
+
+    <ul ngbNav #nav="ngbNav" class="nav-pills d-flex justify-content-between">
+      <li ngbNavItem>
+        <a ngbNavLink>Текущая транзакция</a>
+        <ng-template ngbNavContent>
+          <div class="d-flex flex-column p-2 gap-2">
+            <div class="form-group">
+                <label for="trans_hash">Хэш</label>
+                <input id="trans_hash" class="form-control" type="text" disabled [value]="newTransaction?.hash">
+            </div>
+
+            <div class="form-group">
+                <label for="trans_hash">Подпись</label>
+                <input id="trans_hash" class="form-control" type="text" disabled [value]="newTransaction?.signature">
+            </div>
+
+            <div class="form-group">
+                <label for="trans_sender">Отправитель</label>
+                <input id="trans_sender" class="form-control" type="text" disabled [value]="newTransaction?.data?.fromAddress">
+            </div>
+
+            <div class="form-group">
+                <label for="trans_reciever">Получатель</label>
+                <input id="trans_reciever" class="form-control" type="text" disabled [value]="newTransaction?.data?.toAddress">
+            </div>
+
+            <div class="form-group">
+                <label for="trans_amount">Сумма</label>
+                <input id="trans_amount" class="form-control" type="text" disabled [value]="newTransaction?.data?.amount">
+            </div>
+
+            <div class="form-group">
+                <label for="trans_timestamp">Метка времени</label>
+                <input id="trans_timestamp" class="form-control" type="text" disabled [value]="newTransaction?.data?.date">
+            </div>
+        </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink>Пул транзакций</a>
+        <ng-template ngbNavContent>
+          <h6 *ngIf="transactionPool.length === 0;" class="text-secondary text-center mb-2">
+            Пул транзакций пуст
+          </h6>
+          <div class="transactions d-flex flex-column gap-3">
+            <div *ngFor="let transaction of transactionPool" class="card d-flex flex-column p-2 gap-2">
+              <div class="form-group">
+                <label for="trans_hash">Хэш</label>
+                <input id="trans_hash" class="form-control" type="text" disabled [value]="transaction.hash">
+              </div>
+        
+              <div class="form-group">
+                <label for="trans_hash">Подпись</label>
+                <input id="trans_hash" class="form-control" type="text" disabled [value]="transaction.signature">
+              </div>
+        
+              <div class="form-group">
+                <label for="trans_sender">Отправитель</label>
+                <input id="trans_sender" class="form-control" type="text" disabled [value]="transaction.data.fromAddress">
+              </div>
+        
+              <div class="form-group">
+                <label for="trans_reciever">Получатель</label>
+                <input id="trans_reciever" class="form-control" type="text" disabled [value]="transaction.data.toAddress">
+              </div>
+        
+              <div class="form-group">
+                <label for="trans_amount">Сумма</label>
+                <input id="trans_amount" class="form-control" type="text" disabled [value]="transaction.data.amount">
+              </div>
+        
+              <div class="form-group">
+                <label for="trans_timestamp">Метка времени</label>
+                <input id="trans_timestamp" class="form-control" type="text" disabled [value]="transaction.data.date">
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink>Генерирующийся блок</a>
+        <ng-template ngbNavContent>
+          <app-node-block [block]="newBlock"></app-node-block>
+        </ng-template>
+      </li>
+    </ul>
+
+    <form #form="ngForm">
+      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </form>
+</div>

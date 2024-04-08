@@ -1,0 +1,29 @@
+.block {
+    font-size: 0.65rem;
+
+    input {
+        font-size: 0.65rem;
+    }
+
+    .close-btn {
+        background: transparent;
+        border: none;
+        line-height: 1;
+        color: red;
+        cursor: pointer;
+        font-size: 2rem;
+        position: absolute;
+        right: 5px;
+        top: 1px;
+    }
+
+    .close-btn:hover {
+        color: darkred;
+    }
+
+    .transactions {
+        overflow-y: scroll;
+        white-space: nowrap;
+        max-height: 360px;
+    }
+}

@@ -9,8 +9,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BlockDrawerComponent } from './block/block-drawer/block-drawer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-
-
 @NgModule({
   declarations: [
     BlockchainComponent,

@@ -39,6 +39,13 @@ export class BlockchainService {
   }
 
   createTransaction(sender: INode, receiver: INode, toAddress: string, amount: number) {
+    const newNodes: INode[] = this.nodes.value;
+    const newNode = newNodes.find(x => x.id === sender.id);
+
+    if (!newNode) {
+      throw new Error(`Узел с id=${newNode} не найден`);
+    }
+
     const data: ITransactionData = {
       fromAddress: sender.publicKey,
       toAddress: toAddress,
@@ -62,6 +69,9 @@ export class BlockchainService {
       signature: decodedSignature,
       data: data
     };
+
+    newNode.newTransaction = transaction;
+    this.nodes.next(newNodes);
 
     return transaction;
   }
@@ -125,8 +135,17 @@ export class BlockchainService {
       throw new Error(`Блокчейн узла с id=${node.id} не инициализирован`);
     }
     const newNodes = this.nodes.value;
+    const newNode = newNodes.find(x => x.id === node.id);
 
-    const previousHash = node.blockchain.chain[node.blockchain.chain.length - 1].hash;
+    if (!newNode) {
+      throw new Error(`Узел с id=${newNode} не найден`);
+    }
+
+    if (!newNode.blockchain) {
+      throw new Error(`Блокчейн узла с id=${node.id} не инициализирован`);
+    }
+
+    const previousHash = newNode.blockchain.chain[newNode.blockchain.chain.length - 1].hash;
 
     const blockHeader = {
       id: block.hash,
@@ -149,7 +168,7 @@ export class BlockchainService {
       transactions: structuredClone(block.transactions)
     };
 
-    node.newBlock = newBlock;
+    newNode.newBlock = newBlock;
 
     this.nodes.next(newNodes);
   }

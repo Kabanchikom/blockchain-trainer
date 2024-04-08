@@ -10,6 +10,10 @@ import { NodeListComponent } from './nodes/node-list/node-list.component';
 import { SimulationControlsComponent } from './simulation/simulation-controls/simulation-controls.component';
 import { LoggerComponent } from './command-handler/logger/logger.component';
 import { FormsModule } from '@angular/forms';
+import { NodeComponent } from './nodes/node/node.component';
+import { NodeDrawerComponent } from './nodes/node/node-drawer/node-drawer.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NodeBlockComponent } from './nodes/node-block/node-block.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,9 @@ import { FormsModule } from '@angular/forms';
     NodeListComponent,
     SimulationControlsComponent,
     LoggerComponent,
+    NodeComponent,
+    NodeDrawerComponent,
+    NodeBlockComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,7 +31,8 @@ import { FormsModule } from '@angular/forms';
     BlockchainModule,
     FormsModule,
     NetworkModule,
-    NgbModule
+    NgbModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

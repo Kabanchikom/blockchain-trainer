@@ -161,8 +161,6 @@ export class SimulationService {
       amount: transaction.data.amount
     });
 
-    sender.newTransaction = transaction;
-
     this.totalTransactions++;
     //console.log('totalCreated', this.totalTransactions);
     // this.createdTransactions.push(transaction);

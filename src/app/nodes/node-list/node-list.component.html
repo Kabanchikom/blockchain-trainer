@@ -2,11 +2,10 @@
     <h6 class="header text-primary text-center p-1 m-0">Список узлов</h6>
     <div class="d-flex flex-column p-3">
         <span *ngFor="let node of nodes" class="d-flex justify-content-between" href="#">
-            <a class="link-secondary" href="#">{{ node.name }}</a>
-            <a href="#"><i class="bi bi-trash-fill link-danger"></i></a>
+            <a class="node link-secondary" (click)="onNodeClick(node)"><i class="bi bi-pc-display text-primary"></i> {{ node.name }}</a>
         </span>
-        <button class="btn btn-outline-success mt-3">
+        <!-- <button class="btn btn-outline-success mt-3">
             Создать узел <i class="bi bi-pc-display"></i>
-        </button>
+        </button> -->
     </div>
 </div>

@@ -1,0 +1,60 @@
+<div class="block d-flex flex-column p-2 gap-2">
+    <div class="form-group">
+        <label for="nonce">Nonce</label>
+        <input id="nonce" class="form-control" type="text" disabled [value]="block?.nonce || null">
+    </div>
+
+    <div class="form-group">
+        <label for="timestamp">Метка времени</label>
+        <input id="timestamp" class="form-control" type="text" disabled [value]="block?.timestamp?.toString()">
+    </div>
+
+    <div class="form-group">
+        <label for="hash">Хэш</label>
+        <input id="hash" class="form-control" type="text" disabled [value]="block?.hash">
+    </div>
+
+    <div class="form-group">
+        <label for="prev_hash">Предыдущий хэш</label>
+        <input id="prev_hash" class="form-control" type="text" disabled [value]="block?.previousHash">
+    </div>
+
+    <label></label>
+    <button class="btn btn-primary dropdown-toggle" (click)="onTransactionsClick()">Транзакции</button>
+
+    <div [ngbCollapse]="isTransactionsCollapsed">
+        <div class="transactions d-flex flex-column gap-3">
+            <div *ngFor="let transaction of block?.transactions" class="card d-flex flex-column p-2 gap-2">
+                <div class="form-group">
+                    <label for="trans_hash">Хэш</label>
+                    <input id="trans_hash" class="form-control" type="text" disabled [value]="transaction.hash">
+                </div>
+    
+                <div class="form-group">
+                    <label for="trans_hash">Подпись</label>
+                    <input id="trans_hash" class="form-control" type="text" disabled [value]="transaction.signature">
+                </div>
+
+                <div class="form-group">
+                    <label for="trans_sender">Отправитель</label>
+                    <input id="trans_sender" class="form-control" type="text" disabled [value]="transaction.data.fromAddress">
+                </div>
+
+                <div class="form-group">
+                    <label for="trans_reciever">Получатель</label>
+                    <input id="trans_reciever" class="form-control" type="text" disabled [value]="transaction.data.toAddress">
+                </div>
+
+                <div class="form-group">
+                    <label for="trans_amount">Сумма</label>
+                    <input id="trans_amount" class="form-control" type="text" disabled [value]="transaction.data.amount">
+                </div>
+
+                <div class="form-group">
+                    <label for="trans_timestamp">Метка времени</label>
+                    <input id="trans_timestamp" class="form-control" type="text" disabled [value]="transaction.data.date">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
