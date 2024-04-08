@@ -75,9 +75,12 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
 
     this.blockchainService.receiveBlockSubject.subscribe(
       x => {
+        let node = this.nodes.find(y => y.node.id === x.node.id);
+        node?.setBalance(this.blockchainService.getBalance(x.node.publicKey) ?? 0);
+
         setTimeout(() => {
           this.blockItems = this.blockItems.filter(y => {
-            return y.block.hash !== x.hash}
+            return y.block.hash !== x.block.hash}
           );
         }, this.timeRate + this.timeRate / 2);
       }
@@ -94,11 +97,11 @@ export class NetworkMapComponent implements OnInit, AfterViewInit {
     this.blockchainService.initNodes().subscribe(
       x => {
         this.nodes = [
-          new NodeItem(-175, -150, x[0]),
-          new NodeItem(175, -150, x[1]),
-          new NodeItem(200, 100, x[2]),
-          new NodeItem(-200, 100, x[3]),
-          new NodeItem(0, 200, x[4])
+          new NodeItem(-175, -150, x[0], (this.blockchainService.getBalance(x[0].publicKey) ?? 0)),
+          new NodeItem(175, -150, x[1], (this.blockchainService.getBalance(x[1].publicKey) ?? 0)),
+          new NodeItem(200, 100, x[2], (this.blockchainService.getBalance(x[2].publicKey) ?? 0)),
+          new NodeItem(-200, 100, x[3], (this.blockchainService.getBalance(x[3].publicKey) ?? 0)),
+          new NodeItem(0, 200, x[4], (this.blockchainService.getBalance(x[4].publicKey) ?? 0))
         ]
         this.initAll();
       }

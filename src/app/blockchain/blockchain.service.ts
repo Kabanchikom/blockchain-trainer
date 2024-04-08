@@ -26,7 +26,7 @@ export class BlockchainService {
   receiveTransactionSubject: Subject<ITransaction> = new Subject();
 
   broadcastBlockSubject: Subject<{ block: IBlock, node: INode }> = new Subject();
-  receiveBlockSubject: Subject<IBlock> = new Subject();
+  receiveBlockSubject: Subject<{ block: IBlock, node: INode }> = new Subject();
 
   constructor(
     private http: HttpClient
@@ -203,7 +203,7 @@ export class BlockchainService {
     const newBuffer = this.blockBuffer.filter(x => x.hash !== block.hash);
     this.blockBuffer = newBuffer;
 
-    this.receiveBlockSubject.next(block);
+    this.receiveBlockSubject.next({block: block, node: node});
   }
 
   clearBuffer(node: INode) {
