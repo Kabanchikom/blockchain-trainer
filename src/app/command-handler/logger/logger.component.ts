@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LoggerService } from './logger.service';
 import { ILogItem } from './models/ILogItem';
-import { BlockBroadcasted, BlockGenerated, BlockRecieved, TransactionBroadcasted, TransactionCreated, TransactionEnblocked, TransactionRecieved } from './models/logItems';
+import { BlockBroadcasted, BlockDiscarded, BlockGenerated, BlockRecieved, TransactionBroadcasted, TransactionCreated, TransactionEnblocked, TransactionRecieved } from './models/logItems';
 
 @Component({
   selector: 'app-logger',
@@ -70,5 +70,9 @@ export class LoggerComponent implements OnInit {
 
   isBlockRecieved(item: ILogItem): item is BlockRecieved {
     return item.type === 'BlockRecieved';
+  }
+
+  isBlockDiscarded(item: ILogItem): item is BlockDiscarded {
+    return item.type === 'BlockDiscarded';
   }
 }

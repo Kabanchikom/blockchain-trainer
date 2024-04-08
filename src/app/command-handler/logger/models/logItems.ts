@@ -50,3 +50,11 @@ export class BlockRecieved implements ILogItem {
     hash = '';
     reciever = '';
 }
+
+export class BlockDiscarded implements ILogItem {
+    type = 'BlockDiscarded';
+    id = 0;
+    hash = '';
+    reciever = '';
+    reason = '';
+}

@@ -59,6 +59,15 @@
                     <p>Получатель: {{ x.reciever }}</p>
                 </span>
             </span>
+
+            <span *ngIf="isBlockDiscarded(x)">
+                <p class="text-danger">{{ x.id }}. Новый блок отброшен узлом</p>
+                <span class="text-secondary">
+                    <p>Хэш блока: {{ x.hash }}</p>
+                    <p>Получатель: {{ x.reciever }}</p>
+                    <p>Причина: {{ x.reason }}</p>
+                </span>
+            </span>
         </div>
     </div>
 </div>

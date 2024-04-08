@@ -350,12 +350,27 @@ export class SimulationService {
     const reciever = this.nodes[recieverIndex];
 
     if (this.blockchainService.hasBlock(this.pendingBlock.block, reciever)) {
-      //console.log('reciever already has this block', this.pendingBlock);
+      this.loggerService.logBlockDiscarded({
+        type: 'BlockDiscarded',
+        id: 0,
+        hash: this.pendingBlock.block.hash,
+        reciever: reciever.name,
+        reason: 'Данный блок уже есть на этом узле'
+      });
+
       this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }
 
     if (!this.blockchainService.isSubsequenceCorrect(this.pendingBlock.block, reciever)) {
+      this.loggerService.logBlockDiscarded({
+        type: 'BlockDiscarded',
+        id: 0,
+        hash: this.pendingBlock.block.hash,
+        reciever: reciever.name,
+        reason: 'prevHash != hash предыдущего блока'
+      });
+
       //console.log('current hash not equal with prev', this.pendingBlock);
       this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
@@ -365,6 +380,14 @@ export class SimulationService {
     const hashArray = recieverTransactions.map(x => x.hash);
 
     if (hasDuplicates(hashArray)) {
+      this.loggerService.logBlockDiscarded({
+        type: 'BlockDiscarded',
+        id: 0,
+        hash: this.pendingBlock.block.hash,
+        reciever: reciever.name,
+        reason: 'Транзакции в блоке дублируются с транзакциями в предыдущих блоках'
+      });
+
       this.discardBlockSubject.next(this.pendingBlock.block);
       return false;
     }
