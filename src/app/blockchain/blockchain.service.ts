@@ -16,6 +16,7 @@ import { LoggerService } from '../command-handler/logger/logger.service';
 })
 export class BlockchainService {
   readonly transactionsInBlock = 3;
+  readonly minerReward = 10;
 
   nodes: BehaviorSubject<INode[]> = new BehaviorSubject<INode[]>([]);
 
@@ -117,7 +118,8 @@ export class BlockchainService {
         previousHash: '',
         hash: '',
         transactions: [],
-        timestamp: null
+        timestamp: null,
+        coinbase: null
       }
     }
 
@@ -166,7 +168,11 @@ export class BlockchainService {
       timestamp: timestamp,
       previousHash: previousHash,
       hash: doubleHash,
-      transactions: structuredClone(block.transactions)
+      transactions: structuredClone(block.transactions),
+      coinbase: {
+        miner: newNode.publicKey,
+        amount: this.minerReward
+      }
     };
 
     newNode.newBlock = newBlock;
@@ -245,19 +251,28 @@ export class BlockchainService {
       return null;
     }
 
-    const transactions = node.blockchain?.chain
+    if (!node.blockchain) {
+      return null;
+    }
+
+    const transactions = node.blockchain.chain
     .flatMap((x: IBlock) => x.transactions.flatMap(y => y.data));
-
-    const fromTransactions = transactions?.filter(x => x.fromAddress === publicKey);
-    const toTransactions = transactions?.filter(x => x.toAddress === publicKey);
-
-    const spendedCurrency = fromTransactions?.reduce((accumulator ,y) => accumulator + y.amount, 0);
-    const recievedCurrency = toTransactions?.reduce((accumulator ,y) => accumulator + y.amount, 0);
 
     if (!transactions) {
       return null;
     }
 
-    return (recievedCurrency ?? 0) - (spendedCurrency ?? 0);
+
+    const fromTransactions = transactions?.filter(x => x.fromAddress === publicKey);
+    const toTransactions = transactions?.filter(x => x.toAddress === publicKey);
+
+    const spendedCurrency = fromTransactions?.reduce((accumulator, x) => accumulator + x.amount, 0);
+    const recievedCurrency = toTransactions?.reduce((accumulator, x) => accumulator + x.amount, 0);
+
+    const coinbase = node.blockchain.chain.flatMap(x => x.coinbase).filter(x => x?.miner === node.publicKey);
+
+    const minerReward = coinbase.reduce((accumulator, x) => accumulator + (x?.amount ?? 0), 0);
+
+    return (recievedCurrency ?? 0) + minerReward - (spendedCurrency ?? 0);
   }
 }

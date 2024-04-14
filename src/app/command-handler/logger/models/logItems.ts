@@ -35,6 +35,7 @@ export class BlockGenerated implements ILogItem {
     id = 0;
     hash = '';
     miner = '';
+    reward = 0;
 }
 
 export class BlockBroadcasted implements ILogItem {

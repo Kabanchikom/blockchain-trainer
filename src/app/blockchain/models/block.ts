@@ -1,5 +1,5 @@
-import * as CryptoJS from 'crypto-js';
 import { ITransaction } from './transaction';
+import { ICoinbase } from './coinbase';
 
 export interface IBlock {
   nonce: number;
@@ -7,4 +7,5 @@ export interface IBlock {
   previousHash: string;
   hash: string;
   transactions: ITransaction[];
+  coinbase: ICoinbase | null;
 }

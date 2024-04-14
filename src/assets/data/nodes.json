@@ -10,19 +10,11 @@
                     "nonce": 2083236893,
                     "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
-                    "transactions": [
-                        {
-                            "publicKey": "0491bce83c535df8d97722b6d4ffe7de236c67a3a9150470fc1aa3f168a794a858a19b98ec554075d6504442ff304283f7cc93447a0d31ea5a01cec39db0dea8ef",
-                            "hash": "550707f43bac3c9215cbd9767618e0f4a212e7156722b450d3c6a3774d478f0b",
-                            "signature": "3045022100d6265f5f5b989ec6326fb9b7eb7aae38b669e4974bea45b571a1a3475398682602200772f18a9a4fe49d3c1929d9eb9971c299969c913b4e538937a3ab55a29d29fb",
-                            "data": {
-                                "fromAddress": null,
-                                "toAddress": "04ebe3074d1fe1c97a1385a2644856085815d592b4f7db1eb71e3faff6f64694c2d97815c8cf5c5b6979083e487231fbb3bd6968f62d09c81056ea2fc9ec73ffd2",
-                                "amount": 10000,
-                                "date": "2014-04-01T18:25:43.511Z"
-                              }
-                        }
-                    ]
+                    "transactions": [],
+                    "coinbase": {
+                        "miner": "04ebe3074d1fe1c97a1385a2644856085815d592b4f7db1eb71e3faff6f64694c2d97815c8cf5c5b6979083e487231fbb3bd6968f62d09c81056ea2fc9ec73ffd2",
+                        "amount": 10000
+                    }
                 }
             ]
         },
@@ -41,19 +33,11 @@
                     "nonce": 2083236893,
                     "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
-                    "transactions": [
-                        {
-                            "publicKey": "0491bce83c535df8d97722b6d4ffe7de236c67a3a9150470fc1aa3f168a794a858a19b98ec554075d6504442ff304283f7cc93447a0d31ea5a01cec39db0dea8ef",
-                            "hash": "4d009e91f4f75ac12b67db00e87f27b45c17b02891323771d7014a56bb900ca0",
-                            "signature": "304402201238ab2fe5d5df49d1d2065d0d2c75b955356438a7335892cea86c90c1da115202207d195657f32e267c5431534335c687fdcd40d9439bdac7a4a0c91e70a34aa1bf",
-                            "data": {
-                                "fromAddress": null,
-                                "toAddress": "04ac44646a6310b107d4795457860e20a8cfabf2e821adfea04b91b8bc7831ba72f0bbc4e44c94841ee9495390ddafe0dbb63b790e30ebe050cc0f3772f0c8b3b3",
-                                "amount": 10000,
-                                "date": "2014-04-01T18:25:43.511Z"
-                              }
-                        }
-                    ]
+                    "transactions": [],
+                    "coinbase": {
+                        "miner": "04ac44646a6310b107d4795457860e20a8cfabf2e821adfea04b91b8bc7831ba72f0bbc4e44c94841ee9495390ddafe0dbb63b790e30ebe050cc0f3772f0c8b3b3",
+                        "amount": 10000
+                    }
                 }
             ]
         },
@@ -72,19 +56,11 @@
                     "nonce": 2083236893,
                     "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
-                    "transactions": [
-                        {
-                            "publicKey": "0491bce83c535df8d97722b6d4ffe7de236c67a3a9150470fc1aa3f168a794a858a19b98ec554075d6504442ff304283f7cc93447a0d31ea5a01cec39db0dea8ef",
-                            "hash": "9c77cac6dd902b574e02c5754f41d2f044e7799a41fa4f9850a1fb5e1019c3d4",
-                            "signature": "3045022100f99af84abd4941b51c65a86b6ea37a39e732adc3d633af9a5d917ee1595171a80220039d9db3f344d6e5a6c8a387a66744045a439ac01df27d8cee90581079fe35b9",
-                            "data": {
-                                "fromAddress": null,
-                                "toAddress": "049598614a5a8913d7ddcde2ddbcfb86179b8f3bf2420b09bbebd2deade74fd40a89eb703a32cd3ece24df3f779ae27c65a10f2acf8342ee49eee0501244fe7a38",
-                                "amount": 10000,
-                                "date": "2014-04-01T18:25:43.511Z"
-                              }
-                        }
-                    ]
+                    "transactions": [],
+                    "coinbase": {
+                        "miner": "049598614a5a8913d7ddcde2ddbcfb86179b8f3bf2420b09bbebd2deade74fd40a89eb703a32cd3ece24df3f779ae27c65a10f2acf8342ee49eee0501244fe7a38",
+                        "amount": 10000
+                    }
                 }
             ]
         },
@@ -103,19 +79,11 @@
                     "nonce": 2083236893,
                     "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
-                    "transactions": [
-                        {
-                            "publicKey": "0491bce83c535df8d97722b6d4ffe7de236c67a3a9150470fc1aa3f168a794a858a19b98ec554075d6504442ff304283f7cc93447a0d31ea5a01cec39db0dea8ef",
-                            "hash": "1d7405550fd8f9f087b5c3460329079ac7d753e9061784c0ca7d947bd7f96739",
-                            "signature": "3045022100ac6f444d77db23cb41932ad1fd0b7ced3e6d804d760276fbcdc6203195c7e37e022035c24e26781bfff1f27f11b385a1f12f4b339c41c4c53b7494fce6b44e0b6b5f",
-                            "data": {
-                                "fromAddress": null,
-                                "toAddress": "04673e20c11233f2b0a860c33fdc18f132c245ec2e472dff069c132556cebd5e6b5af6e33fdc1386636a08324431094d5e5d918a6a78e94d54dc417bafa912510c",
-                                "amount": 10000,
-                                "date": "2014-04-01T18:25:43.511Z"
-                              }
-                        }
-                    ]
+                    "transactions": [],
+                    "coinbase": {
+                        "miner": "04673e20c11233f2b0a860c33fdc18f132c245ec2e472dff069c132556cebd5e6b5af6e33fdc1386636a08324431094d5e5d918a6a78e94d54dc417bafa912510c",
+                        "amount": 10000
+                    }
                 }
             ]
         },
@@ -134,19 +102,11 @@
                     "nonce": 2083236893,
                     "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "3f5b126e860591a11402e6899ea5a5e88343df767aa5800168a10f6b4df31ec1",
-                    "transactions": [
-                        {
-                            "publicKey": "0491bce83c535df8d97722b6d4ffe7de236c67a3a9150470fc1aa3f168a794a858a19b98ec554075d6504442ff304283f7cc93447a0d31ea5a01cec39db0dea8ef",
-                            "hash": "57c49f658a6ca21b5dd0bd5d414af1db7804fd121b4210cba19cc2124bf95c40",
-                            "signature": "30440220184e6e844365fc69ed8fbbf18855580fa7e709c22064ef22fd33429481320445022035a67d4f175c366bc2e6eee35efaff351867f8e2537651e6a4bf420e603b922c",
-                            "data": {
-                                "fromAddress": null,
-                                "toAddress": "0424106e06d17ddd74943d0cc9daa387c7bed5baa6331b396d470c58cd1cc742be8365605ef11b18f4d74f9a9d42a8c701211d75cd2fd09ed9271c8f9aa5f38b3d",
-                                "amount": 10000,
-                                "date": "2014-04-01T18:25:43.511Z"
-                              }
-                        }
-                    ]
+                    "transactions": [],
+                    "coinbase": {
+                        "miner": "0424106e06d17ddd74943d0cc9daa387c7bed5baa6331b396d470c58cd1cc742be8365605ef11b18f4d74f9a9d42a8c701211d75cd2fd09ed9271c8f9aa5f38b3d",
+                        "amount": 10000
+                    }
                 }
             ]
         },

@@ -296,6 +296,7 @@ export class SimulationService {
       type: 'BlockGenerated',
       hash: miner.newBlock.hash,
       miner: miner.name,
+      reward: miner.newBlock.coinbase!.amount
     });
 
     return true;

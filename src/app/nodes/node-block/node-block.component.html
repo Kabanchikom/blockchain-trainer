@@ -19,6 +19,22 @@
         <input id="prev_hash" class="form-control" type="text" disabled [value]="block?.previousHash">
     </div>
 
+    <ng-container *ngIf="block?.coinbase">
+        <label></label>
+        <div class="card d-flex p-2 gap-2">
+            <h6 class="text-secondary"><b>Coinbase</b></h6>
+            <div class="form-group">
+                <label for="coinbase_miner">Майнер</label>
+                <input id="coinbase_miner" class="form-control" type="text" disabled [value]="block?.coinbase?.miner">
+            </div>
+    
+            <div class="form-group">
+                <label for="coinbase_reward">Вознаграждение</label>
+                <input id="coinbase_reward" class="form-control" type="text" disabled [value]="block?.coinbase?.amount">
+            </div>
+        </div>
+    </ng-container>
+
     <label></label>
     <button class="btn btn-primary dropdown-toggle" (click)="onTransactionsClick()">Транзакции</button>
 
